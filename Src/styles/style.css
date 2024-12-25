@@ -305,3 +305,110 @@ body.customize-support main {
     opacity: 0;
   }
 }
+/* CSS cho container để căn giữa */
+/* CSS cho container để căn giữa */
+.containerOne {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  background-color: #f4f4f4;
+  margin: 0;
+  position: relative;
+}
+
+/* CSS cho khối chính */
+.addXacMinh {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #0056a1;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  width: 300px;
+  height: 50px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 0 10px 2px #feaf88; /* Ánh sáng mặc định */
+  animation: glow-border 2s infinite;
+}
+
+/* CSS cho liên kết */
+.addXacMinh a {
+  color: white;
+  text-decoration: none;
+  z-index: 2;
+}
+
+/* Sóng nước lan tỏa */
+.addXacMinh:before,
+.addXacMinh:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border: 5px solid #feaf88;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  animation: spread-fade1 1.5s ease-in-out infinite;
+}
+
+.addXacMinh:after {
+  animation-delay: 0.3s; /* Hiệu ứng thứ hai chậm hơn */
+}
+@-webkit-keyframes spread-fade1 {
+  0% {
+    -webkit-transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes spread-fade1 {
+  0% {
+    -webkit-transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  to {
+    -webkit-transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+@keyframes glow-border {
+  0% {
+    box-shadow: 0 0 10px 2px #feaf88;
+  }
+  25% {
+    box-shadow: 0 0 15px 4px #ff6f61;
+  }
+  50% {
+    box-shadow: 0 0 20px 6px #ffc107;
+  }
+  75% {
+    box-shadow: 0 0 15px 4px #4caf50;
+  }
+  100% {
+    box-shadow: 0 0 10px 2px #feaf88;
+  }
+}
