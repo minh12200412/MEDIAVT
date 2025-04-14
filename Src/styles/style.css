@@ -245,6 +245,17 @@ body.customize-support main {
   -webkit-animation: spread-fade 1s 0.2s ease-in infinite;
   animation: spread-fade 1s 0.2s ease-in infinite;
 }
+
+.maxlead .lead-item .item-icon.messenger:before {
+  display: block;
+  -webkit-animation: spread-fade 1s ease-in infinite;
+  animation: spread-fade 1s ease-in infinite;
+}
+.maxlead .lead-item .item-icon.messenger:after {
+  display: block;
+  -webkit-animation: spread-fade 1s 0.2s ease-in infinite;
+  animation: spread-fade 1s 0.2s ease-in infinite;
+}
 .maxlead .lead-item .item-txt {
   opacity: 0;
   visibility: hidden;
@@ -273,6 +284,13 @@ body.customize-support main {
 .maxlead .lead-item:hover .item-txt {
   opacity: 0.9;
   visibility: visible;
+}
+.item-txt.item-contact {
+  border-radius: 20px !important;
+  width: 300%;
+  margin-left: 8px;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 @-webkit-keyframes spread-fade {
   0% {
@@ -410,5 +428,18 @@ body.customize-support main {
   }
   100% {
     box-shadow: 0 0 10px 2px #feaf88;
+  }
+}
+
+@media (min-width: 1024px) {
+  .edit-margin0 {
+    margin-left: 40px;
+  }
+  .edit-margin1 {
+    margin-left: 80px;
+  }
+
+  .edit-margin2 {
+    margin-left: 120px;
   }
 }
