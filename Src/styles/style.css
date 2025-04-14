@@ -285,13 +285,6 @@ body.customize-support main {
   opacity: 0.9;
   visibility: visible;
 }
-.item-txt.item-contact {
-  border-radius: 20px !important;
-  width: 300%;
-  margin-left: 8px;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
 @-webkit-keyframes spread-fade {
   0% {
     -webkit-transform: translate(-50%, -50%) scale(0);
@@ -441,5 +434,51 @@ body.customize-support main {
 
   .edit-margin2 {
     margin-left: 120px;
+  }
+}
+.animated-border {
+  position: relative;
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 1rem;
+  background-color: #e4a742; /* màu vàng giống ảnh */
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.animated-border::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(60deg, #ff6a00, #ffcc00, #ff6a00, #ffcc00);
+  background-size: 300% 300%;
+  border-radius: 9999px;
+  z-index: -1;
+  animation: borderShine 3s linear infinite;
+}
+
+@keyframes borderShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 300% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .maxlead {
+    position: relative !important; /* thay vì static */
+    bottom: 80px !important; /* hoặc giá trị nào bạn muốn */
+    left: 0 !important;
+    transform: none !important;
+    text-align: left;
   }
 }
