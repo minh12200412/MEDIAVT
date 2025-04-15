@@ -497,3 +497,10 @@ body.customize-support main {
   max-width: 280px;
   width: 100%;
 }
+@media (min-width: 1024px) {
+  .small-image {
+    height: 700px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
