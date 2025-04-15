@@ -285,6 +285,17 @@ body.customize-support main {
   opacity: 0.9;
   visibility: visible;
 }
+.item-txt.item-contact {
+  margin-left: 8px;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+@media (max-width: 768px) {
+  .maxlead .lead-item:hover .item-txt.item-contact {
+    opacity: 0.9;
+    visibility: visible;
+  }
+}
 @-webkit-keyframes spread-fade {
   0% {
     -webkit-transform: translate(-50%, -50%) scale(0);
