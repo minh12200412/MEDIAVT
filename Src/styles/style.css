@@ -493,3 +493,7 @@ body.customize-support main {
     text-align: left;
   }
 }
+.js {
+  max-width: 280px;
+  width: 100%;
+}
