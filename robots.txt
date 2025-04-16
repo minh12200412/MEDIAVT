@@ -1,4 +1,4 @@
 User-Agent: *
 Allow: /
 
-Sitemap: http://nguyenvanthangmedia.com/sitemap.xml
+Sitemap: https://nguyenvanthangmedia.com/sitemap.xml
