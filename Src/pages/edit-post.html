@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chỉnh sửa bài viết | VanThangMedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <style>
+      .sidebar {
+        transition: all 0.3s ease;
+      }
+      .content-area {
+        transition: all 0.3s ease;
+      }
+      /* .dropdown-menu {
+        display: none;
+        transition: all 0.3s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      } */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .content-area {
+          margin-left: 0 !important;
+        }
+      }
+      .ck-editor__editable {
+        min-height: 300px;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar (same as index.html) -->
+      <div
+        class="sidebar bg-white w-64 md:w-20 lg:w-64 fixed h-full shadow-md z-50"
+      >
+        <div
+          class="flex items-center justify-center h-16 border-b border-gray-200"
+        >
+          <div class="text-blue-600 font-bold text-xl lg:block hidden">
+            ThanhTrungMedia
+          </div>
+          <div
+            class="text-blue-600 font-bold text-xl lg:hidden md:block hidden"
+          >
+            TTM
+          </div>
+        </div>
+        <nav class="mt-4">
+          <div class="px-4">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              Main
+            </div>
+            <a
+              href="./admin.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="home" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Dashboard</span>
+            </a>
+            <a
+              href="./posts.html"
+              class="flex items-center mt-3 py-2 px-4 bg-blue-50 text-blue-600 rounded-lg"
+            >
+              <i data-feather="file-text" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bài viết</span>
+            </a>
+            <a
+              href="./categories.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="folder" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Danh mục</span>
+            </a>
+            <a
+              href="./comments.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="message-square" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bình luận</span>
+            </a>
+          </div>
+          <div class="px-4 mt-8">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              User
+            </div>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="users" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Tài khoản</span>
+            </a>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="settings" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Cài đặt</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Main Content -->
+      <div
+        class="content-area flex-1 flex flex-col overflow-hidden ml-0 md:ml-20 lg:ml-64"
+      >
+        <!-- Top Header (same as index.html) -->
+        <header class="bg-white shadow-sm">
+          <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <button
+                id="sidebarToggle"
+                class="text-gray-500 focus:outline-none lg:hidden"
+              >
+                <i data-feather="menu" class="w-6 h-6"></i>
+              </button>
+              <!-- <div class="relative mx-4 lg:block hidden">
+                <input
+                  type="text"
+                  class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Tìm kiếm..."
+                />
+                <i
+                  data-feather="search"
+                  class="absolute left-3 top-2.5 text-gray-400"
+                ></i>
+              </div> -->
+            </div>
+            <div class="flex items-center space-x-4">
+              <button class="text-gray-500 focus:outline-none relative">
+                <i data-feather="bell" class="w-6 h-6"></i>
+                <span
+                  class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"
+                ></span>
+              </button>
+              <div class="dropdown relative">
+                <button class="flex items-center focus:outline-none">
+                  <img
+                    src="https://randomuser.me/api/portraits/men/32.jpg"
+                    class="w-8 h-8 rounded-full"
+                    alt="User"
+                  />
+                  <span class="ml-2 text-gray-700 font-medium lg:block hidden"
+                    >Admin</span
+                  >
+                  <!-- <i
+                    data-feather="chevron-down"
+                    class="ml-1 w-4 h-4 text-gray-500 lg:block hidden"
+                  ></i> -->
+                </button>
+                <div
+                  class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 transition ease-out duration-100 transform opacity-0 scale-95 pointer-events-none"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Hồ sơ cá nhân</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đổi mật khẩu</a
+                  >
+                  <div class="border-t border-gray-200"></div>
+                  <a
+                    href="login.html"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đăng xuất</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+          <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Chỉnh sửa bài viết</h1>
+            <div class="flex space-x-2">
+              <button
+                class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+              >
+                Xem trước
+              </button>
+              <button
+                class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+              >
+                Lưu nháp
+              </button>
+              <button
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Xuất bản
+              </button>
+            </div>
+          </div>
+
+          <!-- Post Form -->
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="lg:col-span-2">
+                <div class="mb-6">
+                  <label
+                    for="title"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Tiêu đề bài viết</label
+                  >
+                  <input
+                    type="text"
+                    id="title"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nhập tiêu đề..."
+                  />
+                </div>
+                <div class="mb-6">
+                  <label
+                    for="slug"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Đường dẫn (Slug)</label
+                  >
+                  <input
+                    type="text"
+                    id="slug"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="duong-dan-bai-viet"
+                  />
+                </div>
+                <div class="mb-6">
+                  <label
+                    for="editor"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Nội dung bài viết</label
+                  >
+                  <div id="editor"></div>
+                </div>
+              </div>
+              <div class="lg:col-span-1">
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Ảnh đại diện</label
+                  >
+                  <div
+                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+                  >
+                    <div class="space-y-1 text-center">
+                      <div class="flex text-sm text-gray-600">
+                        <label
+                          for="file-upload"
+                          class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
+                        >
+                          <span>Tải ảnh lên</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            class="sr-only"
+                          />
+                        </label>
+                        <p class="pl-1">hoặc kéo thả</p>
+                      </div>
+                      <p class="text-xs text-gray-500">
+                        PNG, JPG, GIF tối đa 2MB
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="mb-6">
+                  <label
+                    for="category"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Danh mục</label
+                  >
+                  <select
+                    id="category"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option>Chọn danh mục</option>
+                    <option>Công nghệ</option>
+                    <option>Kinh doanh</option>
+                    <option>Giải trí</option>
+                  </select>
+                </div>
+                <div class="mb-6">
+                  <label
+                    for="tags"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Thẻ (Tags)</label
+                  >
+                  <input
+                    type="text"
+                    id="tags"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nhập thẻ, cách nhau bằng dấu phẩy"
+                  />
+                </div>
+                <div class="mb-6">
+                  <label
+                    for="excerpt"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                    >Tóm tắt</label
+                  >
+                  <textarea
+                    id="excerpt"
+                    rows="3"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Tóm tắt ngắn gọn nội dung bài viết..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      feather.replace();
+      const dropdownButton = document.querySelector(".dropdown button");
+      const dropdownMenu = document.querySelector(".dropdown-menu");
+      const dropdownIcon = document.getElementById("dropdown-icon"); // [MỚI] Lấy ra thẻ icon
+
+      // Các lớp định nghĩa trạng thái "hiện" của menu
+      const activeClasses = ["opacity-100", "scale-100", "pointer-events-auto"];
+      // Các lớp định nghĩa trạng thái "ẩn" của menu
+      const inactiveClasses = ["opacity-0", "scale-95", "pointer-events-none"];
+
+      // 2. Thêm sự kiện "click" cho nút dropdown
+      dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const isHidden = dropdownMenu.classList.contains("opacity-0");
+
+        if (isHidden) {
+          console.log(isHidden);
+          // Nếu đang ẩn -> Hiện nó ra
+          dropdownMenu.classList.remove(...inactiveClasses);
+          dropdownMenu.classList.add(...activeClasses);
+          // [MỚI] Đổi icon thành "up"
+          dropdownIcon.setAttribute("data-feather", "chevron-up");
+        } else {
+          console.log(isHidden);
+          // Nếu đang hiện -> Ẩn nó đi
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon thành "down"
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+        }
+        // [MỚI] Yêu cầu Feather Icons vẽ lại icon vừa được thay đổi
+        feather.replace();
+      });
+
+      // 3. Đóng dropdown khi nhấp ra bên ngoài
+      window.addEventListener("click", function () {
+        event.stopPropagation();
+        if (dropdownMenu.classList.contains("opacity-100")) {
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon về "down" khi đóng menu
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+          // [MỚI] Yêu cầu Feather Icons vẽ lại
+          feather.replace();
+        }
+      });
+      // Initialize CKEditor
+      ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+        console.error(error);
+      });
+
+      // Sidebar Toggle
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Responsive sidebar behavior
+      function handleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const content = document.querySelector(".content-area");
+
+        if (window.innerWidth < 768) {
+          sidebar.classList.remove("active");
+        } else if (window.innerWidth < 1024) {
+          sidebar.classList.add("active");
+        } else {
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleSidebar);
+      handleSidebar();
+    </script>
+  </body>
+</html>

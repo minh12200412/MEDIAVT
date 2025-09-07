@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login | VanThangMedia</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+      .login-card {
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .btn-login {
+        transition: all 0.3s ease;
+        background-image: linear-gradient(to right, #3b82f6, #6366f1);
+      }
+      .btn-login:hover {
+        background-image: linear-gradient(to right, #6366f1, #3b82f6);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+      }
+      .btn-login:active {
+        transform: translateY(0);
+      }
+      .input-field:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      }
+      .modal-enter {
+        animation: modalEnter 0.4s ease-out forwards;
+      }
+      @keyframes modalEnter {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .spinner {
+        border-top-color: #3b82f6;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .animated-gradient-border {
+  border: 6px solid transparent; /* để border-image hiện */
+  border-image: linear-gradient(270deg, #ff00ff, #00ffff, #ffcc00, #ff00ff) 1;
+  animation: borderAnimation 5s linear infinite;
+  border-radius: 16px; /* bo góc cho đẹp */
+  background: #fff; /* giữ nền trắng bên trong */
+}
+
+@keyframes borderAnimation {
+  0% {
+    border-image-source: linear-gradient(270deg, #ff00ff, #00ffff, #ffcc00, #ff00ff);
+  }
+  50% {
+    border-image-source: linear-gradient(270deg, #00ffff, #ffcc00, #ff00ff, #00ffff);
+  }
+  100% {
+    border-image-source: linear-gradient(270deg, #ff00ff, #00ffff, #ffcc00, #ff00ff);
+  }
+}
+
+    </style>
+  </head>
+  <body
+    class="min-h-screen bg-cover bg-center bg-fixed"
+    style="background-image: url('../Img/login-bg1.jpg')"
+  >
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative min-h-screen flex items-center justify-center"> 
+      <div class="w-full max-w-md px-6 py-8 ">
+      <div class="login-card bg-white rounded-xl p-8 animated-gradient-border" data-aos="fade-up" >
+        <div class="flex justify-center mb-8"></div>
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">
+          VanThangMedia
+        </h1>
+
+        <form id="loginForm" class="space-y-6">
+          <div>
+            <label
+              for="username"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Tên đăng nhập</label
+            >
+            <input
+              type="text"
+              id="username"
+              required
+              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+              placeholder="admin"
+            />
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700 mb-1"
+              >Mật khẩu</label
+            >
+            <input
+              type="password"
+              id="password"
+              required
+              class="input-field w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+              placeholder="••••••••"
+            />
+          </div>
+          <!-- <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <input
+                id="remember"
+                type="checkbox"
+                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              />
+              <label for="remember" class="ml-2 block text-sm text-gray-700">
+                Remember me
+              </label>
+            </div>
+            <div>
+              <a
+                href="#"
+                class="text-sm text-blue-600 hover:text-blue-500 hover:underline"
+              >
+                Forgot password?
+              </a>
+            </div>
+          </div> -->
+          <div
+            id="error-message"
+            class="text-sm text-red-600 text-center font-medium"
+          ></div>
+
+          <div class="flex items-center justify-between"></div>
+          <button
+            type="submit"
+            class="btn-login w-full py-3 px-4 rounded-lg text-white font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Đăng nhập
+          </button>
+        </form>
+      </div>
+      <p class="mt-6 text-center text-sm text-gray-500">
+        © 2025 nguyenvanthangmedia.com. All rights reserved.
+      </p>
+    </div></div>
+   
+    </body>
+
+    <div
+      id="loadingScreen"
+      class="fixed inset-0 bg-white bg-opacity-90 flex flex-col items-center justify-center z-50 hidden"
+    >
+      <div class="relative w-24 h-24 mb-6">
+        <svg class="progress-ring w-full h-full" viewBox="0 0 100 100">
+          <circle
+            class="progress-ring__circle stroke-gray-200"
+            stroke-width="6"
+            fill="transparent"
+            r="40"
+            cx="50"
+            cy="50"
+          />
+          <circle
+            id="progressCircle"
+            class="progress-ring__circle stroke-blue-500"
+            stroke-width="6"
+            fill="transparent"
+            r="40"
+            cx="50"
+            cy="50"
+            stroke-dasharray="251.2"
+            stroke-dashoffset="251.2"
+          />
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <span id="progressPercent" class="text-xl font-semibold text-gray-700"
+            >0%</span
+          >
+        </div>
+      </div>
+      <p class="text-gray-600 font-medium">Authenticating...</p>
+    </div>
+
+    <div
+      id="successModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+    >
+      <div
+        class="modal-enter bg-white rounded-xl p-8 max-w-sm w-full mx-4 text-center"
+      >
+        <div class="flex justify-center mb-4">
+          <div
+            class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center"
+          >
+            <i data-feather="check" class="w-8 h-8 text-green-600"></i>
+          </div>
+        </div>
+        <h3 class="text-xl font-bold text-gray-800 mb-2">Login Successful</h3>
+        <p class="text-gray-600 mb-6">Redirecting to dashboard...</p>
+      </div>
+    </div>
+
+    <script>
+      AOS.init();
+      feather.replace();
+
+      // Lấy các DOM element cần thiết
+      const loginForm = document.getElementById("loginForm");
+      const loadingScreen = document.getElementById("loadingScreen");
+      const successModal = document.getElementById("successModal");
+      const errorMessageEl = document.getElementById("error-message");
+      const progressCircle = document.getElementById("progressCircle");
+      const progressPercent = document.getElementById("progressPercent");
+
+      /**
+       * Hàm giả lập tiến trình chạy từ 0% đến 100% trong một khoảng thời gian
+       * @param {number} duration Thời gian chạy animation (tính bằng mili-giây)
+       * @returns {Promise<void>} Một promise sẽ resolve khi animation hoàn thành
+       */
+      function animateProgress(duration) {
+        return new Promise((resolve) => {
+          let progress = 0;
+          const circumference = 2 * Math.PI * 40; // 2 * PI * bán kính(r)
+          const stepTime = duration / 100; // Thời gian cho mỗi bước 1%
+
+          const interval = setInterval(() => {
+            progress += 1;
+            progressPercent.textContent = `${progress}%`;
+
+            const offset = circumference - (progress / 100) * circumference;
+            progressCircle.style.strokeDashoffset = offset;
+
+            if (progress >= 100) {
+              clearInterval(interval);
+              // Đợi thêm một chút để người dùng thấy số 100%
+              setTimeout(resolve, 200);
+            }
+          }, stepTime);
+        });
+      }
+
+      // Lắng nghe sự kiện submit form
+      loginForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        // Reset giao diện
+        errorMessageEl.textContent = "";
+        progressPercent.textContent = "0%";
+        progressCircle.style.strokeDashoffset = 2 * Math.PI * 40; // Reset vòng tròn
+        loadingScreen.classList.remove("hidden");
+
+        try {
+          // 1. Bắt đầu GỌI API và ANIMATION cùng một lúc
+          const apiPromise = fetch("https://backendblog-production-3ce5.up.railway.app/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          });
+
+          // Thời gian animation là 1.5 giây
+          const animationPromise = animateProgress(1500);
+
+          // 2. Chờ cho CẢ HAI việc hoàn thành
+          const [apiResponse] = await Promise.all([
+            apiPromise,
+            animationPromise,
+          ]);
+
+          const data = await apiResponse.json();
+
+          // 3. Ẩn màn hình chờ sau khi cả hai đã xong
+          loadingScreen.classList.add("hidden");
+
+          if (apiResponse.ok) {
+            // Xử lý khi đăng nhập THÀNH CÔNG
+            localStorage.setItem("authToken", data.token);
+
+            // 4. Hiển thị modal thành công
+            successModal.classList.remove("hidden");
+            feather.replace();
+
+            // 5. Sau 1.5 giây, chuyển hướng
+            setTimeout(() => {
+              window.location.href = "./admin.html"; // Sửa đường dẫn nếu cần
+            }, 1000);
+          } else {
+            // Xử lý khi đăng nhập THẤT BẠI
+            errorMessageEl.textContent =
+              data.error || "Đăng nhập thất bại. Vui lòng thử lại.";
+          }
+        } catch (error) {
+          // Xử lý khi có lỗi mạng
+          loadingScreen.classList.add("hidden");
+          if (error.message !== "Unauthorized") {
+            errorMessageEl.textContent =
+              "Không thể kết nối đến máy chủ. Vui lòng kiểm tra lại.";
+          }
+        }
+      });
+    </script>
+
+    <!-- <script>
+      AOS.init();
+      feather.replace();
+  
+      const loginForm = document.getElementById("loginForm");
+      const loadingScreen = document.getElementById("loadingScreen");
+      const successModal = document.getElementById("successModal");
+      const errorMessageEl = document.getElementById("error-message");
+  
+      // === BẮT ĐẦU PHẦN MỚI: TỰ ĐỘNG ĐIỀN USERNAME ĐÃ LƯU ===
+      // Chạy ngay khi trang được tải xong để kiểm tra và điền thông tin
+      (function 
+      () {
+          const usernameInput = document.getElementById('username');
+          const rememberCheckbox = document.getElementById('remember');
+          const rememberedUsername = localStorage.getItem('rememberedUsername');
+  
+          if (rememberedUsername) {
+              usernameInput.value = rememberedUsername;
+              rememberCheckbox.checked = true;
+          }
+      })();
+      // === KẾT THÚC PHẦN MỚI ===
+  
+  
+      loginForm.addEventListener("submit", async function (e) {
+          e.preventDefault();
+  
+          const usernameInput = document.getElementById("username");
+          const passwordInput = document.getElementById("password");
+          const rememberCheckbox = document.getElementById("remember");
+  
+          const username = usernameInput.value;
+          const password = passwordInput.value;
+          const rememberMe = rememberCheckbox.checked;
+  
+          errorMessageEl.textContent = "";
+          loadingScreen.classList.remove("hidden");
+  
+          try {
+              const apiPromise = fetch("http://localhost:5000/api/auth/login", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ username, password }),
+              });
+              const minDelayPromise = new Promise(resolve => setTimeout(resolve, 1500));
+              const [apiResponse] = await Promise.all([apiPromise, minDelayPromise]);
+              
+              const data = await apiResponse.json();
+              loadingScreen.classList.add("hidden");
+  
+              if (apiResponse.ok) {
+                  // === BẮT ĐẦU PHẦN MỚI: LƯU HOẶC XÓA USERNAME ===
+                  if (rememberMe) {
+                      // Nếu người dùng tick "Remember me", lưu username vào localStorage
+                      localStorage.setItem('rememberedUsername', username);
+                  } else {
+                      // Nếu không, xóa username đã lưu trước đó (nếu có)
+                      localStorage.removeItem('rememberedUsername');
+                  }
+                  // === KẾT THÚC PHẦN MỚI ===
+  
+  
+                  // Logic lưu token vẫn giữ nguyên như cũ, không thay đổi
+                  // Luôn lưu token vào sessionStorage cho phiên làm việc hiện tại
+                  sessionStorage.setItem("authToken", data.token);
+  
+                  successModal.classList.remove("hidden");
+                  feather.replace();
+  
+                  setTimeout(() => {
+                      window.location.href = './admin.html';
+                  }, 1500);
+  
+              } else {
+                  errorMessageEl.textContent = data.error || "Đăng nhập thất bại.";
+              }
+  
+          } catch (error) {
+              loadingScreen.classList.add("hidden");
+              if (error.message !== 'Unauthorized') {
+                   errorMessageEl.textContent = "Không thể kết nối đến máy chủ.";
+              }
+          }
+      });
+  </script> -->
+  </body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="vi" class="h-full bg-gray-100">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="h-full flex items-center justify-center">
+    <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+      <div>
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          Đăng nhập vào trang quản trị
+        </h2>
+      </div>
+      <form id="loginForm" class="mt-8 space-y-6">
+        <div class="rounded-md shadow-sm -space-y-px">
+          <div>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+              placeholder="Tên đăng nhập"
+            />
+          </div>
+          <div>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+              placeholder="Mật khẩu"
+            />
+          </div>
+        </div>
+        <div id="error-message" class="text-sm text-red-600"></div>
+        <div>
+          <button
+            type="submit"
+            class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Đăng nhập
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const username = document.getElementById("username").value;
+          const password = document.getElementById("password").value;
+          const errorMessageEl = document.getElementById("error-message");
+
+          errorMessageEl.textContent = ""; // Xóa lỗi cũ
+
+          try {
+            const res = await fetch("http://localhost:5000/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password }),
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+              // Lưu token vào localStorage
+              localStorage.setItem("authToken", data.token);
+              // Chuyển hướng đến trang dashboard
+              window.location.href = "./admin.html"; // Sửa đường dẫn nếu cần
+            } else {
+              errorMessageEl.textContent = data.error || "Đăng nhập thất bại";
+            }
+          } catch (error) {
+            errorMessageEl.textContent = "Không thể kết nối đến máy chủ.";
+          }
+        });
+    </script>
+  </body>
+</html> -->

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard | Văn Thắng Media</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+    <script src="../assets/auth-guard.js"></script>
+    <style>
+      .sidebar {
+        /* z-index cao để luôn nằm trên cùng */
+        z-index: 50;
+        transition: transform 0.3s ease-in-out;
+      }
+      .content-area {
+        transition: margin-left 0.3s ease-in-out;
+      }
+
+      /* CSS cho màn hình mobile */
+      @media (max-width: 768px) {
+        .sidebar {
+          /* Mặc định ẩn sidebar ra ngoài màn hình bên trái */
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          /* Khi có class active, trượt sidebar vào trong màn hình */
+          transform: translateX(0);
+        }
+        .content-area {
+          /* Trên mobile, content luôn chiếm toàn bộ chiều rộng */
+          margin-left: 0 !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar -->
+      <div
+        class="sidebar bg-white w-64 md:w-20 lg:w-64 fixed h-full shadow-md z-50"
+      >
+        <div
+          class="flex items-center justify-center h-16 border-b border-gray-200"
+        >
+          <div class="text-blue-600 font-bold text-xl lg:block hidden">
+            VanThangMedia
+          </div>
+          <div
+            class="text-blue-600 font-bold text-xl lg:hidden md:block hidden"
+          >
+            TTM
+          </div>
+        </div>
+        <nav class="mt-4">
+          <div class="px-4">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              Main
+            </div>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 bg-blue-50 text-blue-600 rounded-lg"
+            >
+              <i data-feather="home" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Dashboard</span>
+            </a>
+            <a
+              href="./posts.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="file-text" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bài viết</span>
+            </a>
+            <a
+              href="./categories.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="folder" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Danh mục</span>
+            </a>
+            <a
+              href="./comments.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="message-square" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bình luận</span>
+            </a>
+          </div>
+          <div class="px-4 mt-8">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              User
+            </div>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="users" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Tài khoản</span>
+            </a>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="settings" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Cài đặt</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
+      ></div>
+      <!-- Main Content -->
+      <div
+        class="content-area flex-1 flex flex-col overflow-hidden ml-0 md:ml-20 lg:ml-64"
+      >
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm">
+          <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <button
+                id="sidebarToggle"
+                class="text-gray-500 focus:outline-none lg:hidden"
+              >
+                <i data-feather="menu" class="w-6 h-6"></i>
+              </button>
+              <!-- <div class="relative mx-4 lg:block hidden">
+                <input
+                  type="text"
+                  class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Tìm kiếm..."
+                />
+                <i
+                  data-feather="search"
+                  class="absolute left-3 top-2.5 text-gray-400"
+                ></i>
+              </div> -->
+            </div>
+            <div class="flex items-center space-x-4">
+              <button class="text-gray-500 focus:outline-none relative">
+                <i data-feather="bell" class="w-6 h-6"></i>
+                <span
+                  class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"
+                ></span>
+              </button>
+              <div class="dropdown relative">
+                <button class="flex items-center focus:outline-none">
+                  <img
+                    src="../Img/AnhFB/anhavata2 (2).jpg"
+                    class="w-8 h-8 rounded-full"
+                    alt="User"
+                  />
+                  <span class="ml-2 text-gray-700 font-medium lg:block"
+                    >Admin</span
+                  >
+                  <!-- <i
+                    data-feather="chevron-down"
+                    class="ml-1 w-4 h-4 text-gray-500 lg:block hidden"
+                  ></i> -->
+                  <!-- <i
+                    data-feather="chevron-up"
+                    class="ml-1 w-4 h-4 text-gray-500 lg:block hidden"
+                  ></i> -->
+                  <!-- <i
+                    id="dropdown-icon"
+                    data-feather="chevron-down"
+                    class="ml-1 w-4 h-4 text-gray-500 lg:block"
+                  ></i> -->
+                </button>
+                <div
+                  class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 transition ease-out duration-100 transform opacity-0 scale-95 pointer-events-none"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Hồ sơ cá nhân</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đổi mật khẩu</a
+                  >
+                  <div class="border-t border-gray-200"></div>
+                  <a
+                    href="#"
+                    id="logout-btn"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đăng xuất</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+          <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+          </div>
+
+          <!-- Stats Cards -->
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6"
+          >
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                  <i data-feather="file-text" class="w-6 h-6"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-500">Bài viết</p>
+                  <p
+                    id="post-count"
+                    class="text-xl font-semibold text-gray-800"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                  <i data-feather="folder" class="w-6 h-6"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-500">Danh mục</p>
+                  <p class="text-xl font-semibold text-gray-800">42</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                  <i data-feather="message-square" class="w-6 h-6"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-500">Bình luận</p>
+                  <p class="text-xl font-semibold text-gray-800">5,678</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow p-6">
+              <div class="flex items-center">
+                <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                  <i data-feather="users" class="w-6 h-6"></i>
+                </div>
+                <div class="ml-4">
+                  <p class="text-sm font-medium text-gray-500">Người dùng</p>
+                  <p class="text-xl font-semibold text-gray-800">24</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Posts -->
+          <div
+            id="recent-posts-container"
+            class="bg-white rounded-lg shadow overflow-hidden mb-6"
+          >
+            <div class="px-6 py-4 border-b border-gray-200">
+              <h2 class="text-lg font-semibold text-gray-800">
+                Bài viết gần đây
+              </h2>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Tiêu đề
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Tác giả
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Ngày đăng
+                    </th>
+                    <th
+                      class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Trạng thái
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="recent-posts-tbody"
+                  class="bg-white divide-y divide-gray-200"
+                >
+                  <tr>
+                    <td colspan="4" class="text-center p-8 text-gray-500">
+                      <div class="animate-pulse">Đang tải dữ liệu...</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- <script>
+      // Initialize Feather Icons
+      feather.replace();
+
+      // Initialize AOS
+      AOS.init();
+
+      const dropdownButton = document.querySelector(".dropdown button");
+      const dropdownMenu = document.querySelector(".dropdown-menu");
+      const dropdownIcon = document.getElementById("dropdown-icon"); // [MỚI] Lấy ra thẻ icon
+
+      // Các lớp định nghĩa trạng thái "hiện" của menu
+      const activeClasses = ["opacity-100", "scale-100", "pointer-events-auto"];
+      // Các lớp định nghĩa trạng thái "ẩn" của menu
+      const inactiveClasses = ["opacity-0", "scale-95", "pointer-events-none"];
+
+      // 2. Thêm sự kiện "click" cho nút dropdown
+      dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const isHidden = dropdownMenu.classList.contains("opacity-0");
+
+        if (isHidden) {
+          console.log(isHidden);
+          // Nếu đang ẩn -> Hiện nó ra
+          dropdownMenu.classList.remove(...inactiveClasses);
+          dropdownMenu.classList.add(...activeClasses);
+          // [MỚI] Đổi icon thành "up"
+          dropdownIcon.setAttribute("data-feather", "chevron-up");
+        } else {
+          console.log(isHidden);
+          // Nếu đang hiện -> Ẩn nó đi
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon thành "down"
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+        }
+        // [MỚI] Yêu cầu Feather Icons vẽ lại icon vừa được thay đổi
+        feather.replace();
+      });
+
+      // 3. Đóng dropdown khi nhấp ra bên ngoài
+      window.addEventListener("click", function () {
+        event.stopPropagation();
+        if (dropdownMenu.classList.contains("opacity-100")) {
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon về "down" khi đóng menu
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+          // [MỚI] Yêu cầu Feather Icons vẽ lại
+          feather.replace();
+        }
+      });
+      // Sidebar Toggle
+      // document
+      //   .getElementById("sidebarToggle")
+      //   .addEventListener("click", function () {
+      //     document.querySelector(".sidebar").classList.toggle("active");
+      //   });
+      const sidebar = document.querySelector(".sidebar");
+      const sidebarOverlay = document.getElementById("sidebar-overlay");
+      const sidebarToggle = document.getElementById("sidebarToggle"); // Giả sử nút toggle của bạn có id="sidebarToggle"
+
+      function openSidebar() {
+        if (sidebar && sidebarOverlay) {
+          sidebar.classList.add("active");
+          sidebarOverlay.classList.remove("hidden");
+        }
+      }
+
+      function closeSidebar() {
+        if (sidebar && sidebarOverlay) {
+          sidebar.classList.remove("active");
+          sidebarOverlay.classList.add("hidden");
+        }
+      }
+
+      // 1. Nhấn vào nút toggle để mở/đóng
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener("click", (e) => {
+          e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+          if (sidebar.classList.contains("active")) {
+            closeSidebar();
+          } else {
+            openSidebar();
+          }
+        });
+      }
+
+      // 2. Nhấn vào lớp overlay để đóng
+      if (sidebarOverlay) {
+        sidebarOverlay.addEventListener("click", () => {
+          closeSidebar();
+        });
+      }
+
+      // 3. (Tùy chọn) Nhấn phím Escape để đóng
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && sidebar.classList.contains("active")) {
+          closeSidebar();
+        }
+      });
+
+      // Responsive sidebar behavior
+      function handleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const content = document.querySelector(".content-area");
+
+        if (window.innerWidth < 768) {
+          sidebar.classList.remove("active");
+        } else if (window.innerWidth < 1024) {
+          sidebar.classList.add("active");
+        } else {
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleSidebar);
+      handleSidebar();
+    </script> -->
+  
+  <script>
+  
+  document.addEventListener("DOMContentLoaded", () => {
+
+    async function fetchWithAuth(url, options = {}) {
+    const token = localStorage.getItem('authToken');
+
+    // Tạo headers mặc định
+    const headers = {
+        'Content-Type': 'application/json',
+        ...options.headers,
+    };
+
+    // Thêm token vào header nếu có
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    // Nếu body là FormData, không cần Content-Type
+    if (options.body instanceof FormData) {
+        delete headers['Content-Type'];
+    }
+
+    const response = await fetch(url, { ...options, headers });
+
+    // Xử lý khi token hết hạn hoặc không hợp lệ
+    if (response.status === 401) {
+        // Xóa token cũ
+        localStorage.removeItem('authToken');
+        // Thông báo và chuyển hướng về trang đăng nhập
+        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+        window.location.href = './login.html'; // Sửa đường dẫn nếu cần
+        // Ném lỗi để dừng các xử lý tiếp theo
+        throw new Error('Unauthorized');
+    }
+
+    return response;
+}
+
+    // =================================================================
+    // LOGIC CHO UI (DROPDOWN, SIDEBAR...)
+    // =================================================================
+    feather.replace();
+
+    // Logic cho Admin Dropdown
+    const adminDropdownButton = document.querySelector(".dropdown button");
+    const adminDropdownMenu = document.querySelector(".dropdown-menu");
+    if (adminDropdownButton && adminDropdownMenu) {
+          adminDropdownButton.addEventListener("click", (event) => {
+              event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+              // Chuyển đổi trạng thái hiển thị của menu
+              adminDropdownMenu.classList.toggle("opacity-0");
+              adminDropdownMenu.classList.toggle("scale-95");
+              adminDropdownMenu.classList.toggle("pointer-events-none");
+              adminDropdownMenu.classList.toggle("opacity-100");
+              adminDropdownMenu.classList.toggle("scale-100");
+              adminDropdownMenu.classList.toggle("pointer-events-auto");
+          });
+  
+          // Đóng dropdown khi click ra bên ngoài
+          window.addEventListener("click", (event) => {
+              if (!adminDropdownMenu.classList.contains('opacity-0') && !adminDropdownButton.contains(event.target)) {
+                   adminDropdownMenu.classList.add("opacity-0", "scale-95", "pointer-events-none");
+                   adminDropdownMenu.classList.remove("opacity-100", "scale-100", "pointer-events-auto");
+              }
+          });
+      }
+
+    // Logic cho Sidebar
+    const sidebar = document.querySelector(".sidebar");
+    const sidebarOverlay = document.getElementById("sidebar-overlay");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+    function openSidebar() { /* ... giữ nguyên logic sidebar ... */ }
+    function closeSidebar() { /* ... giữ nguyên logic sidebar ... */ }
+    if (sidebarToggle) { /* ... giữ nguyên logic sidebar ... */ }
+    if (sidebarOverlay) { /* ... giữ nguyên logic sidebar ... */ }
+    document.addEventListener("keydown", (e) => { /* ... giữ nguyên logic sidebar ... */ });
+
+    // =================================================================
+    // LOGIC LẤY DỮ LIỆU CHO DASHBOARD (PHẦN MỚI)
+    // =================================================================
+    const API_URL = "https://backendblog-production-3ce5.up.railway.app/api/posts";
+
+    // Lấy các element cần cập nhật
+    const postCountEl = document.getElementById("post-count");
+    const recentPostsContainer = document.getElementById("recent-posts-container");
+    const recentPostsTbody = document.getElementById("recent-posts-tbody");
+
+    /**
+     * Hàm chính để tải và hiển thị dữ liệu cho dashboard
+     */
+    async function loadDashboardData() {
+        try {
+            const response = await fetchWithAuth(API_URL);
+            if (!response.ok) {
+                throw new Error("Lỗi kết nối mạng");
+            }
+            const allPosts = await response.json();
+
+            // 1. Cập nhật thẻ thống kê số bài viết
+            updateStats(allPosts);
+
+            // 2. Xử lý và hiển thị các bài viết gần đây
+            displayRecentPosts(allPosts);
+
+        } catch (error) {
+            console.error("Không thể tải dữ liệu dashboard:", error);
+            postCountEl.textContent = "Lỗi";
+            recentPostsContainer.innerHTML = `<div class="p-8 text-center text-red-500">Không thể tải dữ liệu. Vui lòng thử lại.</div>`;
+        }
+    }
+
+    /**
+     * Cập nhật thẻ thống kê
+     * @param {Array} posts Mảng tất cả bài viết
+     */
+    function updateStats(posts) {
+        if (postCountEl) {
+            postCountEl.textContent = posts.length.toLocaleString('vi-VN');
+        }
+    }
+
+    /**
+     * Lọc và hiển thị các bài viết gần đây
+     * @param {Array} posts Mảng tất cả bài viết
+     */
+    function displayRecentPosts(posts) {
+        const now = new Date();
+        // Lấy mốc thời gian của 24 giờ trước
+        const oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000)); 
+
+        const recentPosts = posts
+            .filter(post => {
+                const postDate = new Date(post.created_at);
+                // Lọc các bài viết được tạo trong vòng 24 giờ qua
+                return postDate >= oneDayAgo && postDate <= now;
+            })
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sắp xếp mới nhất lên đầu
+            .slice(0, 2); // Chỉ lấy 2 bài viết
+
+        if (recentPosts.length > 0) {
+            renderRecentPostsTable(recentPosts);
+        } else {
+            renderEmptyState();
+        }
+    }
+
+    /**
+     * Hiển thị bảng các bài viết gần đây
+     * @param {Array} postsToRender Mảng các bài viết cần hiển thị
+     */
+    function renderRecentPostsTable(postsToRender) {
+        const html = postsToRender.map(post => {
+            const statusClass = post.status === 'published'
+                ? 'bg-green-100 text-green-800'
+                : 'bg-yellow-100 text-yellow-800';
+            const statusText = post.status === 'published' ? 'Đã đăng' : 'Nháp';
+            const authorName = post.author ? post.author.name : 'Admin';
+
+            return `
+                <tr>
+                    <td class="px-6 py-4">
+                        <div class="text-sm font-medium text-gray-900">${post.title}</div>
+                        <div class="text-sm text-gray-500">${post.slug}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-900">${authorName}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500">${new Date(post.created_at).toLocaleDateString('vi-VN')}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClass}">${statusText}</span>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+        recentPostsTbody.innerHTML = html;
+    }
+
+    /**
+     * Hiển thị thông báo ấn tượng khi không có bài viết nào gần đây
+     */
+    function renderEmptyState() {
+        const emptyHTML = `
+            <div class="px-6 py-12 flex flex-col items-center justify-center text-center bg-gradient-to-br from-blue-50 to-white">
+                <div class="p-4 bg-white rounded-full shadow-md mb-4">
+                    <i data-feather="coffee" class="w-10 h-10 text-blue-500"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">Mọi thứ đều trong tầm kiểm soát!</h3>
+                <p class="text-gray-500 mb-6">
+                    Không có bài viết mới nào trong 24 giờ qua. <br>Đây là cơ hội để bạn sáng tạo nội dung mới!
+                </p>
+                <a href="add-post.html" 
+                   class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-transform transform hover:scale-105">
+                    <i data-feather="edit-3" class="w-5 h-5 mr-2"></i>
+                    Viết bài mới ngay
+                </a>
+            </div>
+        `;
+        // Thay thế toàn bộ container của bảng bằng thông báo này
+        recentPostsContainer.innerHTML = emptyHTML;
+        feather.replace(); // Phải gọi lại để render icon mới
+    }
+    const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        // Xóa token
+        localStorage.removeItem('authToken');
+        // Chuyển hướng về trang đăng nhập
+        window.location.href = './login.html'; // Sửa đường dẫn nếu cần
+    });
+}
+
+    // --- KHỞI CHẠY LẦN ĐẦU ---
+    loadDashboardData();
+
+    // (Tôi đã rút gọn phần code của sidebar và dropdown, bạn chỉ cần đảm bảo chúng nằm bên trong DOMContentLoaded)
+});
+</script></script></body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Soạn tin tức</title>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+  </head>
+  <body>
+    <h2>Thêm tin tức mới</h2>
+    <form id="newsForm" enctype="multipart/form-data">
+      <input
+        type="text"
+        name="title"
+        placeholder="Tiêu đề"
+        style="width: 100%; margin-bottom: 10px"
+        required
+      /><br />
+      <input
+        type="text"
+        name="slug"
+        placeholder="Đường dẫn (slug)"
+        style="width: 100%; margin-bottom: 10px"
+      /><br />
+      <input
+        type="file"
+        name="image"
+        accept="image/*"
+        style="width: 100%; margin-bottom: 10px"
+      /><br />
+      <textarea
+        name="summary"
+        placeholder="Tóm tắt ngắn..."
+        style="width: 100%; height: 80px; margin-bottom: 10px"
+      ></textarea
+      ><br />
+      <textarea name="content" id="editor"></textarea><br />
+      <button type="submit">Lưu bài viết</button>
+    </form>
+
+    <script>
+      let editor;
+      ClassicEditor.create(document.querySelector("#editor"))
+        .then((newEditor) => {
+          editor = newEditor;
+        })
+        .catch((error) => console.error(error));
+
+      document
+        .getElementById("newsForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const fd = new FormData(e.target);
+          // thêm content từ CKEditor
+          fd.set("content", editor.getData());
+
+          try {
+            const res = await fetchWithAuth("http://localhost:5000/api/posts", {
+              method: "POST",
+              body: fd, // KHÔNG dùng JSON.stringify nữa
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+              alert("✅ Đã lưu: " + data.title);
+            } else {
+              alert("❌ Lỗi: " + (data.error || "Không lưu được"));
+            }
+          } catch (err) {
+            alert("❌ Lỗi kết nối server");
+            console.error(err);
+          }
+        });
+    </script>
+  </body>
+</html> -->

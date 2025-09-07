@@ -7,86 +7,431 @@
       content="width=device-width, initial-scale=1, maximum-scale=1"
     />
     <link rel="icon" type="image/x-icon" href="../Img/vtlogo.png" />
-    <title>
-      Tăng tương tác fanpage Facebook - DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA
-    </title>
+    <title>DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA</title>
+    <!-- <link
+      rel="icon"
+      type="image/x-icon"
+      href="https://dichvufhanoi.vn/favicon.ico"
+    /> -->
     <link rel="alternate" href="" hreflang="vi-vn" />
-    <link rel="canonical" href="../pages/dichvu1-2.html" />
-    <link rel="stylesheet" href="../styles/tailwind.css" />
+    <link rel="canonical" href="" />
     <link rel="stylesheet" href="../styles/style.css" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="../assets/app.js"></script>
-    <!-- Search Engine Optimization by Rank Math PRO - https://rankmath.com/ -->
+    <link rel="stylesheet" href="../styles/tailwind.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <meta property="og:image" content="../Img/banner.jpg" />
     <meta property="og:image:secure_url" content="../Img/banner.jpg" />
     <meta property="og:image:width" content="500" />
     <meta property="og:image:height" content="425" />
+
+    <!-- Google tag (gtag.js) -->
+    <!-- <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-DVFLHJCZJN"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-DVFLHJCZJN");
+    </script> -->
+
+    <!-- Google Tag Manager -->
+    <!-- <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-WTHWHTBF");
+    </script> -->
+    <!-- End Google Tag Manager -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .article-content {
+        color: #334155;
+        line-height: 1.75;
+        font-size: 1.125rem;
+      }
+      .article-content > * + * {
+        margin-top: 1.25em;
+      }
+      .article-content h1,
+      .article-content h2,
+      .article-content h3,
+      .article-content h4 {
+        color: #1e293b;
+        font-weight: 700;
+        line-height: 1.3;
+        margin-bottom: 1em;
+        margin-top: 2em;
+      }
+      .article-content h1 {
+        font-size: 2.25rem;
+      }
+      .article-content h2 {
+        font-size: 1.875rem;
+      }
+      .article-content h3 {
+        font-size: 1.5rem;
+      }
+      .article-content h4 {
+        font-size: 1.25rem;
+      }
+      .article-content a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+      .article-content a:hover {
+        text-decoration: underline;
+      }
+      .article-content ul,
+      .article-content ol {
+        padding-left: 1.75em;
+      }
+      .article-content ul {
+        list-style-type: disc;
+      }
+      .article-content ol {
+        list-style-type: decimal;
+      }
+      .article-content img {
+        width: 100%;
+        border-radius: 0.5rem;
+        margin-top: 2em;
+        margin-bottom: 2em;
+      }
+      .article-content strong {
+        font-weight: 600;
+        color: #1e293b;
+      }
+      .article-content code {
+        background-color: #f1f5f9;
+        color: #dc2626;
+        padding: 0.2em 0.4em;
+        border-radius: 0.25rem;
+        font-size: 0.9em;
+      }
+      .related-posts {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      .related-post {
+        display: flex;
+        align-items: center; /* Căn giữa ảnh và nội dung theo chiều dọc */
+        gap: 1rem; /* Giảm khoảng cách giữa ảnh và nội dung */
+        background-color: white;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s, box-shadow 0.2s;
+        text-decoration: none;
+        color: inherit;
+        padding: 1rem; /* Thêm padding cho cả thẻ */
+      }
+
+      .related-post:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      .related-post img {
+        /* THAY ĐỔI Ở ĐÂY: Kích thước ảnh nhỏ hơn */
+        width: 25%; /* Ảnh chiếm 1/4 chiều rộng */
+        max-width: 150px; /* Giới hạn chiều rộng tối đa của ảnh */
+        flex-shrink: 0;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        border-radius: 0.375rem; /* bo góc nhẹ cho ảnh */
+      }
+
+      .related-post-content {
+        /* Bỏ padding ở đây vì đã có ở thẻ cha */
+        padding: 0;
+      }
+
+      /* THAY ĐỔI Ở ĐÂY: Điều chỉnh kích thước font chữ */
+      .related-post-content h4 {
+        font-size: 1rem; /* 16px */
+        font-weight: 600;
+        line-height: 1.4;
+        color: #1e293b;
+        margin-bottom: 0.25rem;
+      }
+
+      .related-post-content p {
+        font-size: 0.875rem; /* 14px */
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      /* Điều chỉnh cho màn hình nhỏ (mobile) */
+      @media (max-width: 768px) {
+        .related-post {
+          flex-direction: column;
+          align-items: flex-start; /* Reset lại căn chỉnh */
+          padding: 0; /* Bỏ padding để ảnh tràn viền */
+        }
+        .related-post img {
+          width: 100%;
+          max-width: none; /* Bỏ giới hạn chiều rộng trên mobile */
+          height: 180px;
+          border-radius: 0;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        .related-post-content {
+          padding: 1rem; /* Thêm lại padding cho nội dung trên mobile */
+        }
+      }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../assets/app.js"></script>
+
+    <!-- Search Engine Optimization by Rank Math PRO - https://rankmath.com/ -->
     <meta
       name="description"
-      content="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA cung cấp dịch vụ giúp quý khách nhanh chóng tăng tương tác fanpage như like, bình luận, chia sẻ ... Dịch vụ facebook uy tín giá rẻ"
+      content="Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc, UY TÍN, CHẤT LƯỢNG, CHUYÊN NGHIỆP, AN TOÀN. Lấy lại fb bị hack chỉ từ 5 phút đến 30 phút."
     />
     <meta
       name="robots"
       content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large"
     />
+    <link rel="canonical" href="" />
     <meta property="og:locale" content="vi_VN" />
     <meta property="og:type" content="article" />
     <meta
       property="og:title"
-      content="Tăng tương tác fanpage Facebook - DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA"
+      content="Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc"
     />
     <meta
       property="og:description"
-      content="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA cung cấp dịch vụ giúp quý khách nhanh chóng tăng tương tác fanpage như like, bình luận, chia sẻ ... Dịch vụ facebook uy tín giá rẻ"
+      content="Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc, UY TÍN, CHẤT LƯỢNG, CHUYÊN NGHIỆP, AN TOÀN. Lấy lại fb bị hack chỉ từ 5 phút đến 30 phút."
     />
-
+    <meta property="og:url" content="" />
     <meta
       property="og:site_name"
       content="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA"
     />
-
-    <meta property="article:section" content="Dịch vụ fanpage Facebook" />
-    <meta property="og:updated_time" content="2024-02-08T21:22:22+07:00" />
+    <meta property="article:publisher" content="" />
+    <meta property="article:section" content="Dịch vụ facebook cá nhân" />
+    <meta property="og:updated_time" content="2024-05-05T08:50:38+07:00" />
+    <meta property="og:image" content="" />
+    <meta property="og:image:secure_url" content="" />
     <meta property="og:image:width" content="500" />
     <meta property="og:image:height" content="425" />
     <meta
       property="og:image:alt"
-      content="Dịch vụ mở khoá Facebook và lấy lại Facebook bị hack"
+      content="Lấy lại facebook bị hack nhanh chóng, trong 1 nốt nhạc"
     />
     <meta property="og:image:type" content="image/jpeg" />
     <meta
       property="article:published_time"
-      content="2023-06-16T11:15:59+07:00"
+      content="2023-06-15T08:32:23+07:00"
     />
     <meta
       property="article:modified_time"
-      content="2024-02-08T21:22:22+07:00"
+      content="2024-05-05T08:50:38+07:00"
     />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="Tăng tương tác fanpage Facebook - DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA"
+      content="Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc - Dịch vụ Facebook Hà Nội"
     />
     <meta
       name="twitter:description"
-      content="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA cung cấp dịch vụ giúp quý khách nhanh chóng tăng tương tác fanpage như like, bình luận, chia sẻ ... Dịch vụ facebook uy tín giá rẻ"
+      content="Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc, UY TÍN, CHẤT LƯỢNG, CHUYÊN NGHIỆP, AN TOÀN. Lấy lại fb bị hack chỉ từ 5 phút đến 30 phút."
     />
-    <meta
-      name="twitter:image"
-      content="../../index.html/wp-content/uploads/2023/06/dich-vu-facebook.jpeg"
-    />
+    <meta name="twitter:image" content="" />
     <meta name="twitter:label1" content="Written by" />
     <meta name="twitter:data1" content="admin" />
     <meta name="twitter:label2" content="Time to read" />
     <meta name="twitter:data2" content="Less than a minute" />
+    <!-- <script type="application/ld+json" class="rank-math-schema-pro">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Place",
+            "@id": "https://dichvufhanoi.vn/#place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "HH1C chung c\u01b0 Linh \u0110\u00e0m",
+              "addressRegion": "H\u00e0 N\u1ed9i",
+              "postalCode": "115100",
+              "addressCountry": "Vi\u1ec7t Nam"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://dichvufhanoi.vn/#organization",
+            "name": "D\u1ecbch V\u1ee5 Facebook H\u00e0 N\u1ed9i",
+            "url": "https://dichvufhanoi.vn",
+            "sameAs": [
+              "https://www.facebook.com/profile.php?id=100093535907325",
+              "D\u1ecbch v\u1ee5 Facebook uy t\u00edn, ch\u1ea5t l\u01b0\u1ee3ng v\u00e0 chuy\u00ean nghi\u1ec7p"
+            ],
+            "email": "chienmediasp@gmail.com",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "HH1C chung c\u01b0 Linh \u0110\u00e0m",
+              "addressRegion": "H\u00e0 N\u1ed9i",
+              "postalCode": "115100",
+              "addressCountry": "Vi\u1ec7t Nam"
+            },
+            "logo": {
+              "@type": "ImageObject",
+              "@id": "https://dichvufhanoi.vn/#logo",
+              "url": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/logo-1.png",
+              "contentUrl": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/logo-1.png",
+              "caption": "D\u1ecbch V\u1ee5 Facebook H\u00e0 N\u1ed9i",
+              "inLanguage": "vi",
+              "width": "250",
+              "height": "250"
+            },
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "telephone": "+84866269868",
+                "contactType": "customer support"
+              }
+            ],
+            "location": { "@id": "https://dichvufhanoi.vn/#place" }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://dichvufhanoi.vn/#website",
+            "url": "https://dichvufhanoi.vn",
+            "name": "D\u1ecbch V\u1ee5 Facebook H\u00e0 N\u1ed9i",
+            "alternateName": "D\u1ecbch V\u1ee5 FB H\u00e0 N\u1ed9i",
+            "publisher": { "@id": "https://dichvufhanoi.vn/#organization" },
+            "inLanguage": "vi"
+          },
+          {
+            "@type": "ImageObject",
+            "@id": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/dich-vu-lay-lai-tai-khoan-facebook-bi-hack.jpeg",
+            "url": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/dich-vu-lay-lai-tai-khoan-facebook-bi-hack.jpeg",
+            "width": "500",
+            "height": "425",
+            "caption": "L\u1ea5y l\u1ea1i facebook b\u1ecb hack nhanh ch\u00f3ng, trong 1 n\u1ed1t nh\u1ea1c",
+            "inLanguage": "vi"
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#breadcrumb",
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": "1",
+                "item": {
+                  "@id": "https://dichvufhanoi.vn",
+                  "name": "Trang ch\u1ee7"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": "2",
+                "item": {
+                  "@id": "https://dichvufhanoi.vn/ca-nhan/",
+                  "name": "D\u1ecbch v\u1ee5 facebook c\u00e1 nh\u00e2n"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": "3",
+                "item": {
+                  "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/",
+                  "name": "D\u1ecbch v\u1ee5 l\u1ea5y l\u1ea1i Facebook b\u1ecb hack trong 1 n\u1ed1t nh\u1ea1c"
+                }
+              }
+            ]
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#webpage",
+            "url": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/",
+            "name": "D\u1ecbch v\u1ee5 l\u1ea5y l\u1ea1i Facebook b\u1ecb hack trong 1 n\u1ed1t nh\u1ea1c - D\u1ecbch v\u1ee5 Facebook H\u00e0 N\u1ed9i",
+            "datePublished": "2023-06-15T08:32:23+07:00",
+            "dateModified": "2024-05-05T08:50:38+07:00",
+            "isPartOf": { "@id": "https://dichvufhanoi.vn/#website" },
+            "primaryImageOfPage": {
+              "@id": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/dich-vu-lay-lai-tai-khoan-facebook-bi-hack.jpeg"
+            },
+            "inLanguage": "vi",
+            "breadcrumb": {
+              "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#breadcrumb"
+            }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://dichvufhanoi.vn/author/admin/",
+            "name": "admin",
+            "url": "https://dichvufhanoi.vn/author/admin/",
+            "image": {
+              "@type": "ImageObject",
+              "@id": "https://secure.gravatar.com/avatar/0f3cf311952495ff10d063cd238562c8?s=96&amp;d=mm&amp;r=g",
+              "url": "https://secure.gravatar.com/avatar/0f3cf311952495ff10d063cd238562c8?s=96&amp;d=mm&amp;r=g",
+              "caption": "admin",
+              "inLanguage": "vi"
+            },
+            "sameAs": ["http://dvfacebook.vn"],
+            "worksFor": { "@id": "https://dichvufhanoi.vn/#organization" }
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "D\u1ecbch v\u1ee5 l\u1ea5y l\u1ea1i Facebook b\u1ecb hack trong 1 n\u1ed1t nh\u1ea1c - D\u1ecbch v\u1ee5 Facebook H\u00e0 N\u1ed9i",
+            "keywords": "l\u1ea5y l\u1ea1i facebook b\u1ecb hack,l\u1ea5y l\u1ea1i fb b\u1ecb hack",
+            "datePublished": "2023-06-15T08:32:23+07:00",
+            "dateModified": "2024-05-05T08:50:38+07:00",
+            "articleSection": "D\u1ecbch v\u1ee5 facebook c\u00e1 nh\u00e2n",
+            "author": {
+              "@id": "https://dichvufhanoi.vn/author/admin/",
+              "name": "admin"
+            },
+            "publisher": { "@id": "https://dichvufhanoi.vn/#organization" },
+            "description": "D\u1ecbch v\u1ee5 l\u1ea5y l\u1ea1i Facebook b\u1ecb hack trong 1 n\u1ed1t nh\u1ea1c, UY T\u00cdN, CH\u1ea4T L\u01af\u1ee2NG, CHUY\u00caN NGHI\u1ec6P, AN TO\u00c0N. L\u1ea5y l\u1ea1i fb b\u1ecb hack ch\u1ec9 t\u1eeb 5 ph\u00fat \u0111\u1ebfn 30 ph\u00fat.",
+            "name": "D\u1ecbch v\u1ee5 l\u1ea5y l\u1ea1i Facebook b\u1ecb hack trong 1 n\u1ed1t nh\u1ea1c - D\u1ecbch v\u1ee5 Facebook H\u00e0 N\u1ed9i",
+            "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#richSnippet",
+            "isPartOf": {
+              "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#webpage"
+            },
+            "image": {
+              "@id": "https://dichvufhanoi.vn/wp-content/uploads/2023/06/dich-vu-lay-lai-tai-khoan-facebook-bi-hack.jpeg"
+            },
+            "inLanguage": "vi",
+            "mainEntityOfPage": {
+              "@id": "https://dichvufhanoi.vn/ca-nhan/lay-lai-facebook-bi-hack-trong-1-not-nhac/#webpage"
+            }
+          }
+        ]
+      }
+    </script> -->
+    <!-- /Rank Math WordPress SEO plugin -->
 
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA &raquo; Tăng tương tác fanpage Facebook Dòng phản hồi"
-      href="../pages/fanpagetuongtac.html"
+      title="DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA &raquo; Dịch vụ lấy lại Facebook bị hack trong 1 nốt nhạc Dòng phản hồi"
+      href="../pages/dichvu1-1.html"
     />
     <style type="text/css">
       img.wp-smiley,
@@ -100,6 +445,48 @@
         vertical-align: -0.1em !important;
         background: none !important;
         padding: 0 !important;
+      }
+    </style>
+    <style>
+      /* ... các style cũ của bạn giữ nguyên ... */
+
+      /* ================================================= */
+      /* == CSS MỚI ĐỂ CĂN CHỈNH THẺ BÀI VIẾT           == */
+      /* ================================================= */
+
+      /* Biến thẻ bài viết thành một flex container */
+      .article-card {
+        display: flex;
+        flex-direction: column; /* Sắp xếp các phần tử theo chiều dọc */
+      }
+
+      /* Biến phần nội dung (chữ) thành một flex container con */
+      .card-body {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Quan trọng: Cho phép phần này co giãn để lấp đầy không gian */
+      }
+
+      /* Phần chứa Tiêu đề và Tóm tắt */
+      .card-content {
+        flex-grow: 1; /* Quan trọng: Đẩy phần "Đọc tiếp" xuống dưới cùng */
+      }
+
+      /* Class để giới hạn và thêm "..." cho đoạn tóm tắt */
+      .summary-truncate {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* Hiển thị tối đa 3 dòng */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* Đặt chiều cao tối thiểu để đảm bảo layout ổn định */
+        min-height: 72px; /* 3 dòng * 24px/dòng (line-height) */
+      }
+      .time-badge {
+        position: absolute;
+        top: 0.75rem; /* 12px */
+        right: 0.75rem; /* 12px */
+        z-index: 10; /* Đảm bảo nó nằm trên ảnh */
       }
     </style>
     <link
@@ -479,6 +866,7 @@
       src="../assets/jquery-migrate.min.js"
       id="jquery-migrate-js"
     ></script>
+    <link rel="shortlink" href="" />
     <noscript
       ><style id="rocket-lazyload-nojs-css">
         .rll-youtube-player,
@@ -487,9 +875,26 @@
         }
       </style></noscript
     >
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+      .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .time-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 10;
+      }
+    </style>
   </head>
-
-  <body class="bg-light-100">
+  <body class="bg-gray-50">
+    <!-- Header -->
     <header
       id="header"
       class="top-0 left-0 right-0 h-14 font-montserrat menu-relative home-header"
@@ -665,7 +1070,7 @@
             id="menu-item-251"
             class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-251"
           >
-            <a href="../pages/blog.html">Tin tức</a>
+            <a href="#">Tin tức</a>
           </li>
         </ul>
         <div class="flex-1 flex justify-end items-center mr-1 xl:hidden">
@@ -701,11 +1106,11 @@
                   class="p-1 flex justify-center w-1/2"
                 >
                   <!-- <img
-                id="logo"
-                src=""
-                alt="logo"
-                class="w-40 h-full object-contain"
-              /> -->
+              id="logo"
+              src=""
+              alt="logo"
+              class="w-40 h-full object-contain"
+            /> -->
                 </a>
                 <div
                   id="back-menu"
@@ -922,7 +1327,7 @@
                   id="menu-item-842"
                   class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-842"
                 >
-                  <a href="../pages/blog.html">Tin tức</a>
+                  <a href="#">Tin tức</a>
                 </li>
               </ul>
             </div>
@@ -931,243 +1336,59 @@
       </div>
     </header>
 
-    <main class="pt-14">
-      <section class="container mx-auto lg:my-4 md:my-3 my-2 lg:px-0 px-2">
-        <nav aria-label="breadcrumbs" class="rank-math-breadcrumb">
-          <p>
-            <a href="../../index.html">Trang chủ</a
-            ><span class="separator"> | </span
-            ><a href="../pages/fanpagetuongtac.html">Dịch vụ fanpage Facebook</a
-            ><span class="separator"> | </span
-            ><span class="last">Tăng tương tác fanpage Facebook</span>
-          </p>
-        </nav>
-      </section>
-      <section
-        class="container mx-auto lg:my-10 my-4 font-montserrat xl:px-0 px-2"
-      >
-        <div
-          class="detail-content rounded-md drop-shadow-md bg-white lg:p-4 px-2"
-        >
-          <h1><strong>Tăng tương tác fanpage Facebook</strong></h1>
-          <div class="flex md:items-center md:flex-row flex-col items-start">
-            <div class="flex items-center">
-              <div class="mr-1 italic underline decoration-1 text-sm">
-                Đánh giá:
-              </div>
-              <img alt="star" class="w-4 h-4" src="../Img/ic_star.svg" />
-              <img alt="star" class="w-4 h-4" src="../Img/ic_star.svg" />
-              <img alt="star" class="w-4 h-4" src="../Img/ic_star.svg" />
-              <img alt="star" class="w-4 h-4" src="../Img/ic_star.svg" />
-              <img alt="star" class="w-4 h-4" src="../Img/ic_star.svg" />
-              <div class="ml-1 text-lg font-extrabold text-yellow-100 text-sm">
-                4.9
-              </div>
-            </div>
-            <!-- <div class="md:ml-4 md:mt-0">
-              <a
-                href="/phan-hoi-cua-khach-hang"
-                class="underline decoration-1 text-sm italic"
-                >Xem hình ảnh phản hồi</a
-              >
-            </div> -->
-          </div>
-          <p>
-            Hiện nay trên thị trường có rất nhiều bên cung cấp dịch vụ giúp tăng
-            tương tác fanpage như like, chia sẻ, bình luận, &#8230; Quý khách có
-            thể tìm kiếm trên Google với các từ khoá như: dv facebook, dịch vụ
-            facebook, dịch vụ FaceBook, … để tham khảo thêm.
-          </p>
-          <p>
-            Dưới đây là thông tin chi tiết mà
-            <a href="../../index.html"
-              >DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA</a
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 pt-20">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Cột nội dung chính -->
+        <div class="w-full lg:w-3/3">
+          <div id="breadcrumb" class="breadcrumb text-sm text-gray-600 mb-4">
+            <a href="../../index.html" class="hover:text-blue-600">Trang chủ</a>
+            /
+            <a href="../pages/blog.html" class="hover:text-blue-600">Tin tức</a>
+            /
+            <span id="breadcrumb-post-title" class="text-gray-800 font-medium"
+              >Đang tải...</span
             >
-            chúng tôi gửi đến quý khách sau <strong>nhiều năm</strong> hỗ trợ
-            khách hàng tăng tương tác fanpage.
-          </p>
-          <div class="flex lg:flex-row flex-col-reverse">
-            <div class="flex-2">
-              <div>
-                <h2 class="font-bold text-primary">Dịch vụ</h2>
-                <p>
-                  Chắc hẳn ai xây dựng thương hiệu trên fanpage đều cần đến lượt
-                  like, theo dõi hiển thị trên Fanpage phải không nào. Không
-                  phải cứ fanpage có nhiều like, theo dõi là nổi tiếng, uy tín
-                  nhưng mà người nổi tiếng, uy tín đều có nhiều lượt like, theo
-                  dõi.
-                </p>
-                <p>
-                  Thấu hiểu tâm lí khách hàng nên
-                  <a href="../../index.html"
-                    >DỊCH VỤ FACEBOOK NGUYỄN VĂN THẮNG MEDIA</a
-                  >
-                  ra mắt tính năng tăng tăng tương tác cho Fanpage như like,
-                  chia sẻ, bình luận, xem story, tăng mắt livestream, &#8230;
-                </p>
-              </div>
-
-              <div>
-                <h2 class="font-bold text-primary">
-                  Tác dụng của tăng tương tác Fanpage
-                </h2>
-                <p>Một số tác dụng của việc tăng tương tác fanpage:</p>
-                <ul>
-                  <li>
-                    Tăng độ tin cậy và uy tín: khi fanpage có nhiều like, người
-                    khác sẽ đánh giá cao và tin tưởng vào thương hiệu, sản phẩm
-                    hoặc dịch vụ mà fanpage đại diện. Số lượng like là một yếu
-                    tố đánh giá tích cực và cho thấy sự phổ biến của fanpage, từ
-                    đó tạo niềm tin và sự tin tưởng từ khách hàng và cộng đồng.
-                  </li>
-                  <li>
-                    Tạo ấn tượng ban đầu: Khi một người mới ghé thăm fanpage và
-                    thấy số lượng like lớn, họ sẽ có cảm giác fanpage đáng để
-                    quan tâm và theo dõi. Điều này giúp tạo ấn tượng ban đầu
-                    tích cực và khả năng thu hút thêm người tham gia.
-                  </li>
-                  <li>
-                    Tăng khả năng tiếp cận: fanpage có nhiều like có khả năng
-                    tiếp cận đến đông đảo khán giả hơn. Khi có nhiều người theo
-                    dõi, bài viết và thông tin từ fanpage có thể được lan truyền
-                    rộng rãi thông qua việc chia sẻ và tương tác từ người hâm
-                    mộ. Điều này tạo ra một tầm ảnh hưởng lớn hơn và cơ hội tiếp
-                    cận đến đối tượng khách hàng mới.
-                  </li>
-                  <li>
-                    Tạo sự thu hút và khác biệt: fanpage với nhiều like gây ấn
-                    tượng và tạo sự thu hút hơn so với fanpage có ít like. Số
-                    lượng like nhiều tạo ra cảm giác phổ biến và hấp dẫn, thu
-                    hút sự chú ý của khách hàng và cạnh tranh tốt hơn trong lĩnh
-                    vực kinh doanh.
-                  </li>
-                  <li>
-                    Tạo động lực cho sự phát triển: khi fanpage có nhiều like,
-                    người quản lý fanpage và nhân viên có động lực để phát triển
-                    nội dung, tương tác với khách hàng và cung cấp dịch vụ tốt
-                    hơn. Sự phản hồi tích cực từ người dùng giúp tạo động lực và
-                    tạo ra môi trường tốt để phát triển fanpage.
-                  </li>
-                  <li></li>
-                </ul>
-              </div>
-
-              <div>
-                <h2 class="font-bold text-primary">Liên hệ ngay</h2>
-                <div class="flex justify-center">
-                  <a
-                    href="https://zalo.me/0567062222"
-                    rel="nofollow"
-                    target="_blank"
-                    class="lg:rounded-3xl rounded-2xl lg:px-4 px-2 lg:py-3 py-2 bg-white drop-shadow-md flex items-center justify-center"
-                  >
-                    <img
-                      src="../Img/icons8-zalo.svg"
-                      class="lg:h-5 w-6 h-6 object-contain"
-                      alt="Icon Zalo"
-                    />
-                    <span class="ml-2 font-bold">Chat Zalo</span>
-                  </a>
-                  <a
-                    href="tel:0567062222"
-                    rel="nofollow"
-                    class="lg:rounded-3xl rounded-2xl lg:px-4 px-2 lg:py-3 py-2 drop-shadow-md bg-white flex items-center justify-center ml-4"
-                  >
-                    <img
-                      src="../Img/icons8-phone.svg"
-                      class="lg:h-5 w-6 h-6 object-contain"
-                      alt="Icon Phone"
-                    />
-                    <span class="ml-2 font-bold">0567062222</span>
-                  </a>
-                </div>
-              </div>
-
-              <div class="lg:mt-10 mt-6">
-                <h2 class="font-bold text-primary">
-                  Các
-                  <a href="../../index.html">dịch vụ facebook</a>
-                  liên quan
-                </h2>
-                <div class="flex flex-col">
-                  <a class="flex" href="">
-                    <span class="font-bold lg:mr-2 mr-2">>>></span>
-                    <span>Tăng mắt xem livestream</span>
-                  </a>
-                  <a class="flex" href="">
-                    <span class="font-bold lg:mr-2 mr-2">>>></span>
-                    <span>Tăng đánh giá 5 sao Fanpage</span>
-                  </a>
-                  <a class="flex" href="">
-                    <span class="font-bold lg:mr-2 mr-2">>>></span>
-                    <span>Kháng fanpage bị hủy đăng</span>
-                  </a>
-                  <a class="flex" href="">
-                    <span class="font-bold lg:mr-2 mr-2">>>></span>
-                    <span
-                      >Mở khóa Fanpage bị vô hiệu hóa do vi phạm bản quyền
-                    </span>
-                  </a>
-                  <a class="flex" href="">
-                    <span class="font-bold lg:mr-2 mr-2">>>></span>
-                    <span>Đổi tên fanpage</span>
-                  </a>
-                </div>
+          </div>
+          <article
+            id="post-container"
+            class="bg-white rounded-lg shadow-md overflow-hidden"
+          >
+            <div class="px-6 py-6 border-b">
+              <h1
+                id="post-title"
+                class="text-3xl lg:text-4xl font-bold text-gray-800 mb-3 leading-tight"
+              >
+                Đang tải tiêu đề...
+              </h1>
+              <div
+                id="post-meta"
+                class="article-meta text-sm text-gray-500 flex items-center"
+              ></div>
+            </div>
+            <div
+              id="table-of-contents-container"
+              class="px-6 py-4 border-b hidden"
+            ></div>
+            <div class="p-6">
+              <div id="post-content" class="article-content">
+                <!-- Skeleton Loader -->
               </div>
             </div>
-            <div class="flex-1 lg:ml-4 ml-0">
-              <div class="flex flex-col items-center lg:mb-4 mb-3">
-                <img
-                  class="w-full h-auto object-contain"
-                  src="../Img/FacebookFp/z4439979554961_caacf49784bd5e24d851fe1903008709.jpg"
-                  alt=""
-                />
-                <span class="text-sm italic mt-1"></span>
-              </div>
-            </div>
+          </article>
+          <div class="mt-12">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">
+              Bài viết liên quan
+            </h3>
+            <div id="related-posts-grid" class="related-posts"></div>
           </div>
         </div>
-        <div
-          class="detail-content table-price rounded-md drop-shadow-md bg-white p-4 lg:mt-3 mt-2"
-        >
-          <h2 style="text-align: center">
-            <strong
-              >Bảng giá
-              <a href="../../index.html"
-                ><span style="color: #000000">dịch vụ facebook</span></a
-              >
-              tăng tương tác fanpage Facebook</strong
-            >
-          </h2>
-          <table style="border-collapse: collapse; width: 100%; height: 48px">
-            <tbody>
-              <tr style="height: 24px">
-                <th style="width: 13.7589%; height: 24px">
-                  <strong>Tên dịch vụ</strong>
-                </th>
-                <th style="width: 14.8664%; height: 24px">Mô tả chi tiết</th>
-                <th style="width: 7.80041%; height: 24px">
-                  <strong>Bổ sung </strong>
-                </th>
-                <th style="width: 9.71782%; height: 24px">
-                  <strong>Giá dịch vụ </strong>
-                </th>
-              </tr>
-              <tr style="height: 24px">
-                <td style="width: 13.7589%; height: 24px">
-                  Dịch vụ tăng tương tác fanpage facebook như like, chia sẻ,
-                  bình luận, &#8230;
-                </td>
-                <td style="width: 14.8664%; height: 24px"></td>
-                <td style="width: 7.80041%; height: 24px"></td>
-                <td style="width: 9.71782%; height: 24px">Liên hệ</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+
+        <!-- === SIDEBAR ĐÃ ĐƯỢC THÊM LẠI VÀO ĐÂY === -->
+      </div>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-primary pt-10 text-white">
       <div class="container mx-auto">
         <div class="grid lg:grid-cols-3 grid-cols-1 lg:gap-x-8 md:gap-x-4">
@@ -1311,7 +1532,6 @@
         </div>
       </div>
     </footer>
-
     <div
       class="fixed bottom-0 lg:left-0 left-auto lg:right-auto right-0 lg:pl-2 lg:pr-0 pr-1 pb-2 lg:pb-6 flex flex-col z-50"
     >
@@ -1369,7 +1589,7 @@
                   gradientUnits="userSpaceOnUse"
                 >
                   <!-- <stop stop-color="#0c84ec"></stop>
-                  <stop offset="1" stop-color="0c84ec"></stop> -->
+                <stop offset="1" stop-color="0c84ec"></stop> -->
                 </linearGradient>
               </defs>
             </svg>
@@ -1457,505 +1677,169 @@
         </div>
       </div>
     </div>
-
-    <div
-      id="modalImage"
-      class="image-modal hidden fixed z-10 pt-24 left-0 top-0 w-full h-full overflow-auto bg-black/75"
-    >
-      <span class="close absolute top-20 right-10 text-white text-3xl font-bold"
-        >&times;</span
-      >
-      <img
-        class="modal-content m-auto block"
-        id="modalImageContent"
-        alt="chi tiết hình ảnh"
-      />
-      <div
-        id="modalImageCaption"
-        class="m-auto block text-center pt-2 text-white"
-      ></div>
-    </div>
-
-    <!-- <div id="qrModal" class="hidden fixed left-0 top-0 w-full h-full overflow-auto bg-black/75 justify-center items-center z-30">
-    <div id="qrModalContent" class="lg:w-1/3 w-4/5 flex items-center justify-center relative flex-col">
-        <img class="w-full h-auto object-contain" src="" alt="zalo qr" />
-        <div class="text-white font-bold text-2xl">ZALO: <span id="zaloPhone"></span></div>
-        <div class="text-white my-1">QUÝ KHÁCH VUI LÒNG SỬ DỤNG ỨNG DỤNG ZALO ĐỂ QUÉT QR</div>
-        <div class="w-full text-white flex flex-col">
-            <span class="text-bold">Trên điện thoai di động, quý khách có thể:</span>
-            <span>1. Chụp ảnh màn hình</span>
-            <span>2. Mở app zalo, và chọn quét mã QR</span>
-            <span>3. Chọn ảnh có sẵn, và chọn ảnh màn hình vừa chụp</span>
-        </div>
-        <div id="btnCloseZalo" class="close absolute top-1 right-1 text-red-100 bg-white rounded-full w-8 h-8 flex items-center justify-center text-2xl text-bold">
-            &times;
-        </div>
-    </div>
-</div> -->
-
-    <!--Start of Tawk.to Script (0.7.2)-->
-    <!-- <script id="tawk-script" type="text/javascript">
-      if (screen.width > 920) {
-        var Tawk_API = Tawk_API || {};
-        var Tawk_LoadStart = new Date();
-        (function () {
-          var s1 = document.createElement("script"),
-            s0 = document.getElementsByTagName("script")[0];
-          s1.async = true;
-          s1.src = "https://embed.tawk.to/648c4aa194cf5d49dc5e17cb/1h320723r";
-          s1.charset = "UTF-8";
-          s1.setAttribute("crossorigin", "*");
-          s0.parentNode.insertBefore(s1, s0);
-        })();
-      }
-    </script> -->
-    <!--End of Tawk.to Script (0.7.2)-->
-    <script type="text/javascript" id="toc-front-js-extra">
-      /* <![CDATA[ */
-      var tocplus = {
-        visibility_show: "Hi\u1ec3n th\u1ecb",
-        visibility_hide: "\u1ea8n",
-        width: "Auto",
-      };
-      /* ]]> */
-    </script>
-    <script
-      type="text/javascript"
-      src="../../index.html/wp-content/plugins/table-of-contents-plus/front.min.js?ver=2106"
-      id="toc-front-js"
-    ></script>
-    <script type="text/javascript" id="rocket-browser-checker-js-after">
-      "use strict";
-      var _createClass = (function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            (descriptor.enumerable = descriptor.enumerable || !1),
-              (descriptor.configurable = !0),
-              "value" in descriptor && (descriptor.writable = !0),
-              Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }
-        return function (Constructor, protoProps, staticProps) {
-          return (
-            protoProps && defineProperties(Constructor.prototype, protoProps),
-            staticProps && defineProperties(Constructor, staticProps),
-            Constructor
-          );
-        };
-      })();
-      function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor))
-          throw new TypeError("Cannot call a class as a function");
-      }
-      var RocketBrowserCompatibilityChecker = (function () {
-        function RocketBrowserCompatibilityChecker(options) {
-          _classCallCheck(this, RocketBrowserCompatibilityChecker),
-            (this.passiveSupported = !1),
-            this._checkPassiveOption(this),
-            (this.options = !!this.passiveSupported && options);
-        }
-        return (
-          _createClass(RocketBrowserCompatibilityChecker, [
-            {
-              key: "_checkPassiveOption",
-              value: function (self) {
-                try {
-                  var options = {
-                    get passive() {
-                      return !(self.passiveSupported = !0);
-                    },
-                  };
-                  window.addEventListener("test", null, options),
-                    window.removeEventListener("test", null, options);
-                } catch (err) {
-                  self.passiveSupported = !1;
-                }
-              },
-            },
-            {
-              key: "initRequestIdleCallback",
-              value: function () {
-                !1 in window &&
-                  (window.requestIdleCallback = function (cb) {
-                    var start = Date.now();
-                    return setTimeout(function () {
-                      cb({
-                        didTimeout: !1,
-                        timeRemaining: function () {
-                          return Math.max(0, 50 - (Date.now() - start));
-                        },
-                      });
-                    }, 1);
-                  }),
-                  !1 in window &&
-                    (window.cancelIdleCallback = function (id) {
-                      return clearTimeout(id);
-                    });
-              },
-            },
-            {
-              key: "isDataSaverModeOn",
-              value: function () {
-                return (
-                  "connection" in navigator &&
-                  !0 === navigator.connection.saveData
-                );
-              },
-            },
-            {
-              key: "supportsLinkPrefetch",
-              value: function () {
-                var elem = document.createElement("link");
-                return (
-                  elem.relList &&
-                  elem.relList.supports &&
-                  elem.relList.supports("prefetch") &&
-                  window.IntersectionObserver &&
-                  "isIntersecting" in IntersectionObserverEntry.prototype
-                );
-              },
-            },
-            {
-              key: "isSlowConnection",
-              value: function () {
-                return (
-                  "connection" in navigator &&
-                  "effectiveType" in navigator.connection &&
-                  ("2g" === navigator.connection.effectiveType ||
-                    "slow-2g" === navigator.connection.effectiveType)
-                );
-              },
-            },
-          ]),
-          RocketBrowserCompatibilityChecker
-        );
-      })();
-    </script>
-    <script type="text/javascript" id="rocket-preload-links-js-extra">
-      /* <![CDATA[ */
-      var RocketPreloadLinksConfig = {
-        excludeUris:
-          "\/(?:.+\/)?feed(?:\/(?:.+\/?)?)?$|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/refer\/|\/go\/|\/recommend\/|\/recommends\/",
-        usesTrailingSlash: "1",
-        imageExt:
-          "jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php",
-        fileExt:
-          "jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php|html|htm",
-        siteUrl: "https:\/\/dichvufhanoi.vn",
-        onHoverDelay: "100",
-        rateThrottle: "3",
-      };
-      /* ]]> */
-    </script>
-    <script type="text/javascript" id="rocket-preload-links-js-after">
-      (function () {
-        "use strict";
-        var r =
-            "function" == typeof Symbol && "symbol" == typeof Symbol.iterator
-              ? function (e) {
-                  return typeof e;
-                }
-              : function (e) {
-                  return e &&
-                    "function" == typeof Symbol &&
-                    e.constructor === Symbol &&
-                    e !== Symbol.prototype
-                    ? "symbol"
-                    : typeof e;
-                },
-          e = (function () {
-            function i(e, t) {
-              for (var n = 0; n < t.length; n++) {
-                var i = t[n];
-                (i.enumerable = i.enumerable || !1),
-                  (i.configurable = !0),
-                  "value" in i && (i.writable = !0),
-                  Object.defineProperty(e, i.key, i);
-              }
-            }
-            return function (e, t, n) {
-              return t && i(e.prototype, t), n && i(e, n), e;
-            };
-          })();
-        function i(e, t) {
-          if (!(e instanceof t))
-            throw new TypeError("Cannot call a class as a function");
-        }
-        var t = (function () {
-          function n(e, t) {
-            i(this, n),
-              (this.browser = e),
-              (this.config = t),
-              (this.options = this.browser.options),
-              (this.prefetched = new Set()),
-              (this.eventTime = null),
-              (this.threshold = 1111),
-              (this.numOnHover = 0);
-          }
-          return (
-            e(
-              n,
-              [
-                {
-                  key: "init",
-                  value: function () {
-                    !this.browser.supportsLinkPrefetch() ||
-                      this.browser.isDataSaverModeOn() ||
-                      this.browser.isSlowConnection() ||
-                      ((this.regex = {
-                        excludeUris: RegExp(this.config.excludeUris, "i"),
-                        images: RegExp(".(" + this.config.imageExt + ")$", "i"),
-                        fileExt: RegExp(".(" + this.config.fileExt + ")$", "i"),
-                      }),
-                      this._initListeners(this));
-                  },
-                },
-                {
-                  key: "_initListeners",
-                  value: function (e) {
-                    -1 < this.config.onHoverDelay &&
-                      document.addEventListener(
-                        "mouseover",
-                        e.listener.bind(e),
-                        e.listenerOptions
-                      ),
-                      document.addEventListener(
-                        "mousedown",
-                        e.listener.bind(e),
-                        e.listenerOptions
-                      ),
-                      document.addEventListener(
-                        "touchstart",
-                        e.listener.bind(e),
-                        e.listenerOptions
-                      );
-                  },
-                },
-                {
-                  key: "listener",
-                  value: function (e) {
-                    var t = e.target.closest("a"),
-                      n = this._prepareUrl(t);
-                    if (null !== n)
-                      switch (e.type) {
-                        case "mousedown":
-                        case "touchstart":
-                          this._addPrefetchLink(n);
-                          break;
-                        case "mouseover":
-                          this._earlyPrefetch(t, n, "mouseout");
-                      }
-                  },
-                },
-                {
-                  key: "_earlyPrefetch",
-                  value: function (t, e, n) {
-                    var i = this,
-                      r = setTimeout(function () {
-                        if (((r = null), 0 === i.numOnHover))
-                          setTimeout(function () {
-                            return (i.numOnHover = 0);
-                          }, 1e3);
-                        else if (i.numOnHover > i.config.rateThrottle) return;
-                        i.numOnHover++, i._addPrefetchLink(e);
-                      }, this.config.onHoverDelay);
-                    t.addEventListener(
-                      n,
-                      function e() {
-                        t.removeEventListener(n, e, { passive: !0 }),
-                          null !== r && (clearTimeout(r), (r = null));
-                      },
-                      { passive: !0 }
-                    );
-                  },
-                },
-                {
-                  key: "_addPrefetchLink",
-                  value: function (i) {
-                    return (
-                      this.prefetched.add(i.href),
-                      new Promise(function (e, t) {
-                        var n = document.createElement("link");
-                        (n.rel = "prefetch"),
-                          (n.href = i.href),
-                          (n.onload = e),
-                          (n.onerror = t),
-                          document.head.appendChild(n);
-                      }).catch(function () {})
-                    );
-                  },
-                },
-                {
-                  key: "_prepareUrl",
-                  value: function (e) {
-                    if (
-                      null === e ||
-                      "object" !== (void 0 === e ? "undefined" : r(e)) ||
-                      !1 in e ||
-                      -1 === ["http:", "https:"].indexOf(e.protocol)
-                    )
-                      return null;
-                    var t = e.href.substring(0, this.config.siteUrl.length),
-                      n = this._getPathname(e.href, t),
-                      i = {
-                        original: e.href,
-                        protocol: e.protocol,
-                        origin: t,
-                        pathname: n,
-                        href: t + n,
-                      };
-                    return this._isLinkOk(i) ? i : null;
-                  },
-                },
-                {
-                  key: "_getPathname",
-                  value: function (e, t) {
-                    var n = t ? e.substring(this.config.siteUrl.length) : e;
-                    return (
-                      n.startsWith("/") || (n = "/" + n),
-                      this._shouldAddTrailingSlash(n) ? n + "/" : n
-                    );
-                  },
-                },
-                {
-                  key: "_shouldAddTrailingSlash",
-                  value: function (e) {
-                    return (
-                      this.config.usesTrailingSlash &&
-                      !e.endsWith("/") &&
-                      !this.regex.fileExt.test(e)
-                    );
-                  },
-                },
-                {
-                  key: "_isLinkOk",
-                  value: function (e) {
-                    return (
-                      null !== e &&
-                      "object" === (void 0 === e ? "undefined" : r(e)) &&
-                      !this.prefetched.has(e.href) &&
-                      e.origin === this.config.siteUrl &&
-                      -1 === e.href.indexOf("?") &&
-                      -1 === e.href.indexOf("#") &&
-                      !this.regex.excludeUris.test(e.href) &&
-                      !this.regex.images.test(e.href)
-                    );
-                  },
-                },
-              ],
-              [
-                {
-                  key: "run",
-                  value: function () {
-                    "undefined" != typeof RocketPreloadLinksConfig &&
-                      new n(
-                        new RocketBrowserCompatibilityChecker({
-                          capture: !0,
-                          passive: !0,
-                        }),
-                        RocketPreloadLinksConfig
-                      ).init();
-                  },
-                },
-              ]
-            ),
-            n
-          );
-        })();
-        t.run();
-      })();
-    </script>
     <script>
-      window.lazyLoadOptions = [
-        {
-          elements_selector: "img[data-lazy-src],.rocket-lazyload",
-          data_src: "lazy-src",
-          data_srcset: "lazy-srcset",
-          data_sizes: "lazy-sizes",
-          class_loading: "lazyloading",
-          class_loaded: "lazyloaded",
-          threshold: 300,
-          callback_loaded: function (element) {
-            if (
-              element.tagName === "IFRAME" &&
-              element.dataset.rocketLazyload == "fitvidscompatible"
-            ) {
-              if (element.classList.contains("lazyloaded")) {
-                if (typeof window.jQuery != "undefined") {
-                  if (jQuery.fn.fitVids) {
-                    jQuery(element).parent().fitVids();
-                  }
-                }
-              }
-            }
-          },
-        },
-        {
-          elements_selector: ".rocket-lazyload",
-          data_src: "lazy-src",
-          data_srcset: "lazy-srcset",
-          data_sizes: "lazy-sizes",
-          class_loading: "lazyloading",
-          class_loaded: "lazyloaded",
-          threshold: 300,
-        },
-      ];
-      window.addEventListener(
-        "LazyLoad::Initialized",
-        function (e) {
-          var lazyLoadInstance = e.detail.instance;
-          if (window.MutationObserver) {
-            var observer = new MutationObserver(function (mutations) {
-              var image_count = 0;
-              var iframe_count = 0;
-              var rocketlazy_count = 0;
-              mutations.forEach(function (mutation) {
-                for (var i = 0; i < mutation.addedNodes.length; i++) {
-                  if (
-                    typeof mutation.addedNodes[i].getElementsByTagName !==
-                    "function"
-                  ) {
-                    continue;
-                  }
-                  if (
-                    typeof mutation.addedNodes[i].getElementsByClassName !==
-                    "function"
-                  ) {
-                    continue;
-                  }
-                  images = mutation.addedNodes[i].getElementsByTagName("img");
-                  is_image = mutation.addedNodes[i].tagName == "IMG";
-                  iframes =
-                    mutation.addedNodes[i].getElementsByTagName("iframe");
-                  is_iframe = mutation.addedNodes[i].tagName == "IFRAME";
-                  rocket_lazy =
-                    mutation.addedNodes[i].getElementsByClassName(
-                      "rocket-lazyload"
-                    );
-                  image_count += images.length;
-                  iframe_count += iframes.length;
-                  rocketlazy_count += rocket_lazy.length;
-                  if (is_image) {
-                    image_count += 1;
-                  }
-                  if (is_iframe) {
-                    iframe_count += 1;
-                  }
-                }
-              });
-              if (image_count > 0 || iframe_count > 0 || rocketlazy_count > 0) {
-                lazyLoadInstance.update();
-              }
-            });
-            var b = document.getElementsByTagName("body")[0];
-            var config = { childList: !0, subtree: !0 };
-            observer.observe(b, config);
+      feather.replace();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- 1. KHAI BÁO BIẾN & HẰNG SỐ ---
+        const API_URL =
+          "https://backendblog-production-3ce5.up.railway.app/api/posts";
+
+        // DOM Elements
+        const breadcrumbTitleEl = document.getElementById(
+          "breadcrumb-post-title"
+        );
+        const postContainer = document.getElementById("post-container");
+        const postTitleEl = document.getElementById("post-title");
+        const postMetaEl = document.getElementById("post-meta");
+        const postContentEl = document.getElementById("post-content");
+        const relatedPostsGridEl =
+          document.getElementById("related-posts-grid");
+        const tocContainer = document.getElementById(
+          "table-of-contents-container"
+        );
+
+        // --- 2. CÁC HÀM TIỆN ÍCH ---
+        function timeAgo(dateString) {
+          /* ... Giữ nguyên hàm timeAgo ... */
+        }
+
+        /**
+         * HÀM MỚI: Tự động tạo mục lục từ các thẻ heading
+         * @param {HTMLElement} contentElement Element chứa nội dung bài viết
+         */
+        function generateTableOfContents(contentElement) {
+          if (!tocContainer) return;
+
+          // Tìm tất cả các thẻ h2, h3 trong nội dung
+          const headings = contentElement.querySelectorAll("h2, h3");
+          if (headings.length < 2) {
+            // Chỉ hiện mục lục nếu có ít nhất 2 tiêu đề
+            tocContainer.classList.add("hidden");
+            return;
           }
-        },
-        !1
-      );
+
+          let tocHTML = `
+                  <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-8 rounded-r">
+                      <h3 class="font-bold text-lg text-gray-800 mb-2">Nội dung chính</h3>
+                      <ul class="list-disc pl-5 space-y-1">
+              `;
+
+          headings.forEach((heading, index) => {
+            const id = `section-${index + 1}`;
+            heading.id = id; // Gán ID cho thẻ heading
+            const isH3 = heading.tagName === "H3";
+
+            // Thêm class lùi vào cho thẻ h3
+            const indentClass = isH3 ? "ml-4" : "";
+
+            tocHTML += `
+                      <li class="${indentClass}">
+                          <a href="#${id}" class="text-blue-600 hover:underline">${heading.textContent}</a>
+                      </li>
+                  `;
+          });
+
+          tocHTML += "</ul></div>";
+          tocContainer.innerHTML = tocHTML;
+          tocContainer.classList.remove("hidden");
+        }
+
+        // --- 3. CÁC HÀM CHÍNH ---
+        function getPostIdFromUrl() {
+          const params = new URLSearchParams(window.location.search);
+          return params.get("id");
+        }
+
+        async function loadPostDetails() {
+          const postIdOrSlug = getPostIdFromUrl();
+          if (!postIdOrSlug) {
+            /* ... */ return;
+          }
+
+          try {
+            const response = await fetch(`${API_URL}/${postIdOrSlug}`);
+            if (!response.ok) {
+              throw new Error("Bài viết không tồn tại hoặc đã bị xóa.");
+            }
+            const post = await response.json();
+
+            document.title = post.title;
+            breadcrumbTitleEl.textContent = post.title;
+            postTitleEl.textContent = post.title;
+            postMetaEl.innerHTML = `<span>${new Date(
+              post.created_at
+            ).toLocaleString("vi-VN")}</span>`;
+            postContentEl.innerHTML = post.content;
+
+            // GỌI HÀM TẠO MỤC LỤC SAU KHI NỘI DUNG ĐÃ ĐƯỢC THÊM
+            generateTableOfContents(postContentEl);
+
+            loadRelatedPosts(post.id);
+          } catch (error) {
+            /* ... */
+          }
+        }
+
+        async function loadRelatedPosts(currentPostId) {
+          try {
+            const response = await fetch(API_URL);
+            if (!response.ok) return;
+
+            const allPosts = await response.json();
+            const relatedPosts = allPosts
+              .filter(
+                (post) =>
+                  post.id !== currentPostId && post.status === "published"
+              )
+              .slice(0, 4);
+
+            if (relatedPostsGridEl && relatedPosts.length > 0) {
+              // --- BẮT ĐẦU THAY ĐỔI TỪ ĐÂY ---
+
+              const postsHTML = relatedPosts
+                .map((post) => {
+                  // const timeAgoText = timeAgo(post.created_at);
+                  const detailUrl = `chitietbaiviet.html?id=${
+                    post.slug || post.id
+                  }`;
+
+                  // THÊM VÀO: Tạo một đoạn tóm tắt ngắn
+                  const truncatedSummary =
+                    post.summary && post.summary.length > 120
+                      ? post.summary.substring(0, 250) + "..."
+                      : post.summary || "";
+
+                  // CẬP NHẬT LẠI: Cấu trúc HTML bên trong
+                  return `
+                    <a href="${detailUrl}" class="related-post">
+                        <img src="${post.image_url}" alt="${post.title}">
+                        <div class="related-post-content">
+                            <p class="text-xs text-gray-500 mb-1">${"Bài viết hot"}</p>
+                            <h4 class="font-semibold text-gray-800 text-lg mb-2 leading-tight">${
+                              post.title
+                            }</h4>
+                            <p class="text-sm text-gray-600 hidden md:block">${truncatedSummary}</p>
+                        </div>
+                    </a>
+                `;
+                })
+                .join("");
+
+              // --- KẾT THÚC THAY ĐỔI ---
+
+              relatedPostsGridEl.innerHTML = postsHTML;
+            } else if (relatedPostsGridEl) {
+              relatedPostsGridEl.innerHTML =
+                '<p class="text-sm text-gray-500">Không có bài viết liên quan.</p>';
+            }
+          } catch (error) {
+            console.error("Lỗi tải bài viết liên quan:", error);
+          }
+        }
+        // --- 4. KHỞI CHẠY ---
+        loadPostDetails();
+      });
     </script>
-    <script data-no-minify="1" async src="../assets/lazyload.min.js"></script>
   </body>
 </html>

@@ -1,0 +1,27 @@
+<div id="blog-list"></div>
+<script>
+  const API = "https://backendblog-production-3ce5.up.railway.app/api/posts";
+  fetch(API)
+    .then((r) => r.json())
+    .then((posts) => {
+      const html = posts
+        .map(
+          (p) => `
+      <article style="border:1px solid #eee;padding:12px;margin:12px 0">
+        ${
+          p.image_url
+            ? `<img src="${p.image_url}" alt="${p.title}" style="max-width:240px">`
+            : ""
+        }
+        <h2><a href="chitietbaiviet.html?id=${p.slug || p.id}">${
+            p.title
+          }</a></h2>
+        <p>${p.summary || ""}</p>
+        <small>${new Date(p.created_at).toLocaleString()}</small>
+      </article>
+    `
+        )
+        .join("");
+      document.getElementById("blog-list").innerHTML = html;
+    });
+</script>

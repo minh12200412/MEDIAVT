@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chỉnh sửa bài viết | VanThangMedia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script> -->
+    <!-- <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script> -->
+    <script src="../assets/auth-guard.js"></script>
+
+    <style>
+      .sidebar {
+        /* z-index cao để luôn nằm trên cùng */
+        z-index: 50;
+        transition: transform 0.3s ease-in-out;
+      }
+      .content-area {
+        transition: margin-left 0.3s ease-in-out;
+      }
+      /* .dropdown-menu {
+        display: none;
+        transition: all 0.3s ease;
+      }
+      .dropdown:hover .dropdown-menu {
+        display: block;
+      } */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+        .sidebar.active {
+          transform: translateX(0);
+        }
+        .content-area {
+          margin-left: 0 !important;
+        }
+      }
+      .ck-editor__editable {
+        min-height: 300px;
+      }
+      #preview-image {
+        max-height: 200px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50">
+    <div class="flex h-screen">
+      <!-- Sidebar (same as index.html) -->
+      <div
+        class="sidebar bg-white w-64 md:w-20 lg:w-64 fixed h-full shadow-md z-50"
+      >
+        <div
+          class="flex items-center justify-center h-16 border-b border-gray-200"
+        >
+          <div class="text-blue-600 font-bold text-xl lg:block hidden">
+            VanThangMedia
+          </div>
+          <div
+            class="text-blue-600 font-bold text-xl lg:hidden md:block hidden"
+          >
+            TTM
+          </div>
+        </div>
+        <nav class="mt-4">
+          <div class="px-4">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              Main
+            </div>
+            <a
+              href="./admin.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="home" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Dashboard</span>
+            </a>
+            <a
+              href="./posts.html"
+              class="flex items-center mt-3 py-2 px-4 bg-blue-50 text-blue-600 rounded-lg"
+            >
+              <i data-feather="file-text" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bài viết</span>
+            </a>
+            <a
+              href="./categories.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="folder" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Danh mục</span>
+            </a>
+            <a
+              href="./comments.html"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="message-square" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Bình luận</span>
+            </a>
+          </div>
+          <div class="px-4 mt-8">
+            <div
+              class="text-gray-500 uppercase text-xs font-semibold tracking-wider lg:block hidden"
+            >
+              User
+            </div>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="users" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Tài khoản</span>
+            </a>
+            <a
+              href="#"
+              class="flex items-center mt-3 py-2 px-4 hover:bg-blue-50 hover:text-blue-600 rounded-lg"
+            >
+              <i data-feather="settings" class="w-5 h-5"></i>
+              <span class="ml-3 lg:block md:hidden">Cài đặt</span>
+            </a>
+          </div>
+        </nav>
+      </div>
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden md:hidden"
+      ></div>
+      <!-- Main Content -->
+      <div class="content-area flex-1 flex flex-col ml-0 md:ml-20 lg:ml-64">
+        <!-- Top Header (same as index.html) -->
+        <header class="bg-white shadow-sm">
+          <div class="flex items-center justify-between px-6 py-3">
+            <div class="flex items-center">
+              <button
+                id="sidebarToggle"
+                class="text-gray-500 focus:outline-none lg:hidden"
+              >
+                <i data-feather="menu" class="w-6 h-6"></i>
+              </button>
+              <!-- <div class="relative mx-4 lg:block hidden">
+                <input
+                  type="text"
+                  class="w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Tìm kiếm..."
+                />
+                <i
+                  data-feather="search"
+                  class="absolute left-3 top-2.5 text-gray-400"
+                ></i>
+              </div> -->
+            </div>
+            <div class="flex items-center space-x-4">
+              <button class="text-gray-500 focus:outline-none relative">
+                <i data-feather="bell" class="w-6 h-6"></i>
+                <span
+                  class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"
+                ></span>
+              </button>
+              <div class="dropdown relative">
+                <button class="flex items-center focus:outline-none">
+                  <img
+                    src="../Img/AnhFB/anhavata2 (2).jpg"
+                    class="w-8 h-8 rounded-full"
+                    alt="User"
+                  />
+                  <span class="ml-2 text-gray-700 font-medium lg:block hidden"
+                    >Admin</span
+                  >
+                  <!-- <i
+                    data-feather="chevron-down"
+                    class="ml-1 w-4 h-4 text-gray-500 lg:block hidden"
+                  ></i> -->
+                </button>
+                <div
+                  class="dropdown-menu absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 transition ease-out duration-100 transform opacity-0 scale-95 pointer-events-none"
+                >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Hồ sơ cá nhân</a
+                  >
+                  <a
+                    href="#"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đổi mật khẩu</a
+                  >
+                  <div class="border-t border-gray-200"></div>
+                  <a
+                    href="login.html"
+                    id="logout-btn"
+                    class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    >Đăng xuất</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+          <div class="mb-6 flex items-center justify-between">
+            <h1 class="text-2xl font-bold text-gray-800">Thêm bài viết mới</h1>
+
+            <div class="flex space-x-2">
+              <div id="post-actions" class="flex space-x-2">
+                <button
+                  class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-100"
+                >
+                  Xem trước
+                </button>
+                <button
+                  class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                >
+                  Lưu nháp
+                </button>
+                <button
+                  class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  Xuất bản
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post Form -->
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div class="lg:col-span-2">
+                <div class="mb-6">
+                  <label
+                    for="title"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Tiêu đề bài viết
+                  </label>
+                  <input
+                    type="text"
+                    id="title"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Nhập tiêu đề..."
+                  />
+                </div>
+
+                <div class="mb-6">
+                  <label
+                    for="slug"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Đường dẫn (Slug)
+                  </label>
+                  <input
+                    type="text"
+                    id="slug"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="duong-dan-bai-viet"
+                  />
+                </div>
+
+                <div class="mb-6">
+                  <label
+                    for="editor"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Nội dung bài viết
+                  </label>
+                  <div id="editor"></div>
+                  <br />
+                  <!-- <textarea name="content" id="editor"></textarea><br /> -->
+                </div>
+              </div>
+
+              <div class="lg:col-span-1">
+                <div class="mb-6">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">
+                    Ảnh đại diện
+                  </label>
+                  <div
+                    class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+                  >
+                    <div class="space-y-1 text-center">
+                      <div class="flex text-sm text-gray-600">
+                        <label
+                          for="file-upload"
+                          class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none"
+                        >
+                          <span>Tải ảnh lên</span>
+                          <input
+                            id="file-upload"
+                            name="file-upload"
+                            type="file"
+                            accept="image/*"
+                            class="sr-only"
+                          />
+                        </label>
+                        <p class="pl-1">hoặc kéo thả</p>
+                      </div>
+                      <p class="text-xs text-gray-500">
+                        PNG, JPG, GIF tối đa 2MB
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Hiển thị ảnh sau khi chọn -->
+                  <div class="mt-3">
+                    <img
+                      id="preview-image"
+                      src=""
+                      alt="Preview"
+                      class="hidden w-full h-auto rounded-lg shadow"
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-6">
+                  <label
+                    for="excerpt"
+                    class="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Tóm tắt
+                  </label>
+                  <textarea
+                    id="excerpt"
+                    rows="3"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Tóm tắt ngắn gọn nội dung bài viết..."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!-- Chắc chắn rồi! Việc validate dữ liệu và sử dụng modal thông báo thay cho alert() là một bước rất quan trọng để cải thiện trải nghiệm người dùng.
+
+    Chúng ta sẽ thực hiện việc này qua 2 bước chính:
+    
+    Thêm HTML và CSS (sử dụng Tailwind) cho Modal: Tạo ra một component modal có thể tái sử dụng cho cả thông báo thành công và thất bại.
+    
+    Nâng cấp JavaScript: Viết logic để validate dữ liệu và gọi modal tương ứng.
+    
+    Bước 1: Thêm HTML cho Modal
+    Bạn hãy chèn đoạn mã HTML này vào cuối file của bạn, ngay trước thẻ đóng </body>. Đây là cấu trúc của một modal đơn giản, được ẩn đi mặc định.
+    
+    HTML -->
+
+    <div
+      id="notification-modal"
+      class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 transition-opacity duration-300"
+    >
+      <div
+        class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4 transform transition-transform duration-300 scale-95"
+      >
+        <div class="flex items-start">
+          <div id="modal-icon" class="mr-4">
+            <svg
+              id="modal-icon-success"
+              class="hidden w-8 h-8 text-green-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+            <svg
+              id="modal-icon-error"
+              class="hidden w-8 h-8 text-red-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+
+          <div class="flex-1">
+            <h3 id="modal-title" class="text-xl font-semibold text-gray-800">
+              Tiêu đề thông báo
+            </h3>
+            <p id="modal-message" class="text-sm text-gray-600 mt-2">
+              Nội dung chi tiết ở đây.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-6 text-right">
+          <button
+            id="modal-close-btn"
+            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            Đã hiểu
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- <script>
+      feather.replace();
+      const dropdownButton = document.querySelector(".dropdown button");
+      const dropdownMenu = document.querySelector(".dropdown-menu");
+      const dropdownIcon = document.getElementById("dropdown-icon"); // [MỚI] Lấy ra thẻ icon
+
+      // Các lớp định nghĩa trạng thái "hiện" của menu
+      const activeClasses = ["opacity-100", "scale-100", "pointer-events-auto"];
+      // Các lớp định nghĩa trạng thái "ẩn" của menu
+      const inactiveClasses = ["opacity-0", "scale-95", "pointer-events-none"];
+
+      // 2. Thêm sự kiện "click" cho nút dropdown
+      dropdownButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        const isHidden = dropdownMenu.classList.contains("opacity-0");
+
+        if (isHidden) {
+          console.log(isHidden);
+          // Nếu đang ẩn -> Hiện nó ra
+          dropdownMenu.classList.remove(...inactiveClasses);
+          dropdownMenu.classList.add(...activeClasses);
+          // [MỚI] Đổi icon thành "up"
+          dropdownIcon.setAttribute("data-feather", "chevron-up");
+        } else {
+          console.log(isHidden);
+          // Nếu đang hiện -> Ẩn nó đi
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon thành "down"
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+        }
+        // [MỚI] Yêu cầu Feather Icons vẽ lại icon vừa được thay đổi
+        feather.replace();
+      });
+
+      // 3. Đóng dropdown khi nhấp ra bên ngoài
+      window.addEventListener("click", function () {
+        event.stopPropagation();
+        if (dropdownMenu.classList.contains("opacity-100")) {
+          dropdownMenu.classList.remove(...activeClasses);
+          dropdownMenu.classList.add(...inactiveClasses);
+          // [MỚI] Đổi icon về "down" khi đóng menu
+          dropdownIcon.setAttribute("data-feather", "chevron-down");
+          // [MỚI] Yêu cầu Feather Icons vẽ lại
+          feather.replace();
+        }
+      });
+      // Initialize CKEditor
+      //   ClassicEditor.create(document.querySelector("#editor")).catch((error) => {
+      //     console.error(error);
+      //   });
+
+      // Sidebar Toggle
+      document
+        .getElementById("sidebarToggle")
+        .addEventListener("click", function () {
+          document.querySelector(".sidebar").classList.toggle("active");
+        });
+
+      // Responsive sidebar behavior
+      function handleSidebar() {
+        const sidebar = document.querySelector(".sidebar");
+        const content = document.querySelector(".content-area");
+
+        if (window.innerWidth < 768) {
+          sidebar.classList.remove("active");
+        } else if (window.innerWidth < 1024) {
+          sidebar.classList.add("active");
+        } else {
+          sidebar.classList.remove("active");
+        }
+      }
+
+      window.addEventListener("resize", handleSidebar);
+      handleSidebar();
+
+      // ClassicEditor.create(document.querySelector("#editor"), {
+      //   ckfinder: {
+      //     uploadUrl: "http://localhost:5000/api/upload", // route backend upload ảnh trong nội dung
+      //   },
+      // }).catch((error) => {
+      //   console.error(error);
+      // });
+
+      // Preview ảnh đại diện
+      const fileUpload = document.getElementById("file-upload");
+      const previewImage = document.getElementById("preview-image");
+
+      fileUpload.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            previewImage.classList.remove("hidden");
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+      class MyUploadAdapter {
+        constructor(loader) {
+          this.loader = loader;
+        }
+
+        // Gửi ảnh lên server
+        upload() {
+          return this.loader.file.then((file) => {
+            return new Promise((resolve, reject) => {
+              const data = new FormData();
+              data.append("upload", file);
+
+              fetchWithAuth("http://localhost:5000/api/upload", {
+                method: "POST",
+                body: data,
+              })
+                .then((response) => response.json())
+                .then((result) => {
+                  resolve({
+                    default: result.url, // phải đúng key "default"
+                  });
+                })
+                .catch((err) => {
+                  reject(err);
+                });
+            });
+          });
+        }
+
+        // Nếu hủy upload
+        abort() {}
+      }
+      function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get("FileRepository").createUploadAdapter = (loader) => {
+          return new MyUploadAdapter(loader);
+        };
+      }
+
+      ClassicEditor.create(document.querySelector("#editor"), {
+        extraPlugins: [MyCustomUploadAdapterPlugin],
+      })
+        .then((editor) => {
+          window.editor = editor;
+        })
+        .catch((err) => console.error(err));
+
+      //   let editor;
+      //   ClassicEditor.create(document.querySelector("#editor"))
+      //     .then((newEditor) => {
+      //       editor = newEditor;
+      //     })
+      //     .catch((error) => console.error(error));
+
+      // Lắng nghe click nút
+      document.querySelectorAll("#post-actions button").forEach((btn) => {
+        btn.addEventListener("click", async (e) => {
+          e.preventDefault();
+
+          const action = e.target.innerText; // "Lưu nháp" hoặc "Xuất bản"
+          let status = "draft";
+          if (action.includes("Xuất bản")) status = "published";
+
+          const title = document.getElementById("title").value.trim();
+          const slug = document.getElementById("slug").value.trim();
+          const summary = document.getElementById("excerpt").value.trim();
+          const content = editor.getData();
+          const fileInput = document.getElementById("file-upload");
+
+          const fd = new FormData();
+          fd.append("title", title);
+          fd.append("slug", slug);
+          fd.append("summary", summary);
+          fd.append("content", content);
+          fd.append("status", status);
+          if (fileInput.files[0]) fd.append("image", fileInput.files[0]);
+
+          const res = await fetchWithAuth("http://localhost:5000/api/posts", {
+            method: "POST",
+            body: fd,
+          });
+
+          const data = await res.json();
+          if (res.ok) {
+            alert(
+              `✅ Bài viết đã ${status === "draft" ? "lưu nháp" : "xuất bản"}!`
+            );
+            console.log(data);
+          } else {
+            alert("❌ Lỗi: " + (data.error || "Không rõ nguyên nhân"));
+          }
+        });
+      });
+    </script> -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let editorInstance = null;
+        async function fetchWithAuth(url, options = {}) {
+          const token = localStorage.getItem("authToken");
+
+          // Tạo headers mặc định
+          const headers = {
+            "Content-Type": "application/json",
+            ...options.headers,
+          };
+
+          // Thêm token vào header nếu có
+          if (token) {
+            headers["Authorization"] = `Bearer ${token}`;
+          }
+
+          // Nếu body là FormData, không cần Content-Type
+          if (options.body instanceof FormData) {
+            delete headers["Content-Type"];
+          }
+
+          const response = await fetch(url, { ...options, headers });
+
+          // Xử lý khi token hết hạn hoặc không hợp lệ
+          if (response.status === 401) {
+            // Xóa token cũ
+            localStorage.removeItem("authToken");
+            // Thông báo và chuyển hướng về trang đăng nhập
+            alert("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+            window.location.href = "./login.html"; // Sửa đường dẫn nếu cần
+            // Ném lỗi để dừng các xử lý tiếp theo
+            throw new Error("Unauthorized");
+          }
+
+          return response;
+        }
+        // =================================================================
+        // SCRIPT MỚI - THAY THẾ TOÀN BỘ SCRIPT CŨ CỦA BẠN
+        // =================================================================
+        feather.replace();
+
+        // --- 1. CÁC HÀM XỬ LÝ DROPDOWN VÀ SIDEBAR (Giữ nguyên) ---
+        const adminDropdownButton = document.querySelector(".dropdown button");
+        const adminDropdownMenu = document.querySelector(".dropdown-menu");
+
+        if (adminDropdownButton && adminDropdownMenu) {
+          adminDropdownButton.addEventListener("click", (event) => {
+            event.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+            // Chuyển đổi trạng thái hiển thị của menu
+            adminDropdownMenu.classList.toggle("opacity-0");
+            adminDropdownMenu.classList.toggle("scale-95");
+            adminDropdownMenu.classList.toggle("pointer-events-none");
+            adminDropdownMenu.classList.toggle("opacity-100");
+            adminDropdownMenu.classList.toggle("scale-100");
+            adminDropdownMenu.classList.toggle("pointer-events-auto");
+          });
+
+          // Đóng dropdown khi click ra bên ngoài
+          window.addEventListener("click", (event) => {
+            if (
+              !adminDropdownMenu.classList.contains("opacity-0") &&
+              !adminDropdownButton.contains(event.target)
+            ) {
+              adminDropdownMenu.classList.add(
+                "opacity-0",
+                "scale-95",
+                "pointer-events-none"
+              );
+              adminDropdownMenu.classList.remove(
+                "opacity-100",
+                "scale-100",
+                "pointer-events-auto"
+              );
+            }
+          });
+        }
+
+        // =================================================================
+        // PHẦN CODE HIỆN TẠI CỦA BẠN (ĐƯỢC ĐƯA VÀO BÊN TRONG DOMCONTENTLOADED)
+        // =================================================================
+
+        const sidebar = document.querySelector(".sidebar");
+        const sidebarOverlay = document.getElementById("sidebar-overlay");
+        const sidebarToggle = document.getElementById("sidebarToggle"); // Giả sử nút toggle của bạn có id="sidebarToggle"
+
+        function openSidebar() {
+          if (sidebar && sidebarOverlay) {
+            sidebar.classList.add("active");
+            sidebarOverlay.classList.remove("hidden");
+          }
+        }
+
+        function closeSidebar() {
+          if (sidebar && sidebarOverlay) {
+            sidebar.classList.remove("active");
+            sidebarOverlay.classList.add("hidden");
+          }
+        }
+
+        // 1. Nhấn vào nút toggle để mở/đóng
+        if (sidebarToggle) {
+          sidebarToggle.addEventListener("click", (e) => {
+            e.stopPropagation(); // Ngăn sự kiện click lan ra ngoài
+            if (sidebar.classList.contains("active")) {
+              closeSidebar();
+            } else {
+              openSidebar();
+            }
+          });
+        }
+
+        // 2. Nhấn vào lớp overlay để đóng
+        if (sidebarOverlay) {
+          sidebarOverlay.addEventListener("click", () => {
+            closeSidebar();
+          });
+        }
+
+        // 3. (Tùy chọn) Nhấn phím Escape để đóng
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && sidebar.classList.contains("active")) {
+            closeSidebar();
+          }
+        });
+        // ... (Các logic khác về sidebar responsive có thể giữ nguyên nếu cần)
+
+        // --- 2. XỬ LÝ PREVIEW ẢNH ĐẠI DIỆN (Giữ nguyên) ---
+        const fileUpload = document.getElementById("file-upload");
+        const previewImage = document.getElementById("preview-image");
+        fileUpload.addEventListener("change", (event) => {
+          const file = event.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              previewImage.src = e.target.result;
+              previewImage.classList.remove("hidden");
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // --- 3. CẤU HÌNH CKEDITOR VỚI CUSTOM UPLOAD ADAPTER (Giữ nguyên) ---
+        let editor; // Biến toàn cục để lưu trữ instance của editor
+        class MyUploadAdapter {
+          constructor(loader) {
+            this.loader = loader;
+          }
+          upload() {
+            return this.loader.file.then(
+              (file) =>
+                new Promise((resolve, reject) => {
+                  const data = new FormData();
+                  data.append("upload", file);
+                  fetchWithAuth(
+                    "https://backendblog-production-3ce5.up.railway.app/api/upload",
+                    {
+                      method: "POST",
+                      body: data,
+                    }
+                  )
+                    .then((response) => response.json())
+                    .then((result) => resolve({ default: result.url }))
+                    .catch((err) => reject(err));
+                })
+            );
+          }
+          abort() {
+            /* Xử lý hủy upload nếu cần */
+          }
+        }
+        function MyCustomUploadAdapterPlugin(editor) {
+          editor.plugins.get("FileRepository").createUploadAdapter = (loader) =>
+            new MyUploadAdapter(loader);
+        }
+        ClassicEditor.create(document.querySelector("#editor"), {
+          extraPlugins: [MyCustomUploadAdapterPlugin],
+        })
+          .then((newEditor) => {
+            editorInstance = newEditor;
+          })
+          .catch((err) => console.error(err));
+
+        // --- 4. HÀM XỬ LÝ MODAL THÔNG BÁO (Mới) ---
+        const modal = document.getElementById("notification-modal");
+        const modalTitle = document.getElementById("modal-title");
+        const modalMessage = document.getElementById("modal-message");
+        const modalIconSuccess = document.getElementById("modal-icon-success");
+        const modalIconError = document.getElementById("modal-icon-error");
+        const modalCloseBtn = document.getElementById("modal-close-btn");
+
+        /**
+         * Hiển thị modal với nội dung tùy chỉnh.
+         * @param {string} title Tiêu đề modal.
+         * @param {string} message Nội dung thông báo (có thể chứa HTML).
+         * @param {'success' | 'error'} type Loại thông báo.
+         */
+        function showModal(title, message, type = "error") {
+          modalTitle.textContent = title;
+          modalMessage.innerHTML = message; // Dùng innerHTML để có thể render list lỗi
+
+          if (type === "success") {
+            modalIconSuccess.classList.remove("hidden");
+            modalIconError.classList.add("hidden");
+          } else {
+            modalIconError.classList.remove("hidden");
+            modalIconSuccess.classList.add("hidden");
+          }
+
+          modal.classList.remove("hidden");
+          // Thêm animation khi hiện
+          setTimeout(
+            () =>
+              modal
+                .querySelector("div.transform")
+                .classList.replace("scale-95", "scale-100"),
+            10
+          );
+        }
+
+        function hideModal() {
+          modal
+            .querySelector("div.transform")
+            .classList.replace("scale-100", "scale-95");
+          setTimeout(() => modal.classList.add("hidden"), 300); // Đợi animation xong rồi mới ẩn
+        }
+
+        // Gán sự kiện đóng modal
+        modalCloseBtn.addEventListener("click", hideModal);
+        modal.addEventListener("click", (e) => {
+          // Nếu click vào background mờ thì cũng đóng modal
+          if (e.target === modal) {
+            hideModal();
+          }
+        });
+        //function reset form
+        function resetForm() {
+          // 1. Reset các trường input và textarea thông thường
+          document.getElementById("title").value = "";
+          document.getElementById("slug").value = "";
+          document.getElementById("excerpt").value = "";
+          document.getElementById("file-upload").value = "";
+
+          // 2. Reset nội dung của CKEditor
+          if (editorInstance) {
+            editorInstance.setData("");
+          }
+
+          // 3. Reset và ẩn ảnh xem trước
+          const previewImage = document.getElementById("preview-image");
+          if (previewImage) {
+            previewImage.src = "";
+            previewImage.classList.add("hidden");
+          }
+        }
+        const logoutBtn = document.getElementById("logout-btn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            // SỬA Ở ĐÂY: Xóa token ở cả 2 nơi để đảm bảo đăng xuất hoàn toàn
+            localStorage.removeItem("authToken");
+            sessionStorage.removeItem("authToken");
+
+            window.location.href = "./login.html";
+          });
+        }
+        // --- 5. LẮNG NGHE SỰ KIỆN SUBMIT FORM VỚI VALIDATION (Nâng cấp) ---
+        document.querySelectorAll("#post-actions button").forEach((btn) => {
+          btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            // Lấy dữ liệu từ form
+            const title = document.getElementById("title").value.trim();
+            const slug = document.getElementById("slug").value.trim();
+            const content = editorInstance.getData();
+            const fileInput = document.getElementById("file-upload");
+            const imageFile = fileInput.files[0];
+
+            // **Bắt đầu Validate**
+            const errors = [];
+            if (!title) {
+              errors.push("<li>Tiêu đề không được để trống.</li>");
+            }
+            if (!slug) {
+              errors.push("<li>Đường dẫn (Slug) không được để trống.</li>");
+            }
+            if (!imageFile) {
+              errors.push("<li>Vui lòng chọn ảnh đại diện.</li>");
+            }
+            // CKEditor khi trống vẫn có thể chứa tag <p></p>, cần kiểm tra kỹ hơn
+            if (
+              !content ||
+              content.replace(/<(.|\n)*?>/g, "").trim().length === 0
+            ) {
+              errors.push("<li>Nội dung bài viết không được để trống.</li>");
+            }
+
+            // Nếu có lỗi, hiển thị modal lỗi và dừng lại
+            if (errors.length > 0) {
+              showModal(
+                "Dữ liệu không hợp lệ",
+                `<p class="mb-2">Vui lòng kiểm tra lại các thông tin sau:</p><ul class="list-disc list-inside">${errors.join(
+                  ""
+                )}</ul>`,
+                "error"
+              );
+              return; // Dừng hàm tại đây
+            }
+            // **Kết thúc Validate**
+
+            // Nếu không có lỗi, tiếp tục gửi dữ liệu
+            const action = btn.innerText;
+            let status = "draft";
+            if (action.includes("Xuất bản")) status = "published";
+
+            // Bỏ qua logic submit nếu là "Xem trước"
+            if (action.includes("Xem trước")) {
+              showModal(
+                "Thông báo",
+                "Chức năng 'Xem trước' đang được phát triển!",
+                "success"
+              );
+              return;
+            }
+
+            const fd = new FormData();
+            fd.append("title", title);
+            fd.append("slug", slug);
+            fd.append(
+              "summary",
+              document.getElementById("excerpt").value.trim()
+            );
+            fd.append("content", content);
+            fd.append("status", status);
+            fd.append("image", imageFile);
+
+            try {
+              const res = await fetchWithAuth(
+                "https://backendblog-production-3ce5.up.railway.app/api/posts",
+                {
+                  method: "POST",
+                  body: fd,
+                }
+              );
+
+              const data = await res.json();
+              if (res.ok) {
+                // Thay thế alert bằng modal thành công
+                showModal(
+                  "Thành công!",
+                  `Bài viết đã ${
+                    status === "draft" ? "lưu nháp" : "xuất bản"
+                  } thành công.`,
+                  "success"
+                );
+                document.getElementById("title").value = "";
+                document.getElementById("slug").value = "";
+                document.getElementById("excerpt").value = "";
+                document.getElementById("file-upload").value = "";
+
+                // 2. Reset nội dung của CKEditor
+                if (editorInstance) {
+                  editorInstance.setData("");
+                }
+
+                // 3. Reset và ẩn ảnh xem trước
+                const previewImage = document.getElementById("preview-image");
+                if (previewImage) {
+                  previewImage.src = "";
+                  previewImage.classList.add("hidden");
+                }
+                // Có thể reset form hoặc chuyển trang tại đây
+              } else {
+                // Thay thế alert bằng modal lỗi từ server
+                showModal(
+                  "Thao tác thất bại",
+                  `Lỗi: ${data.error || "Không rõ nguyên nhân"}`,
+                  "error"
+                );
+              }
+            } catch (error) {
+              console.error("Fetch error:", error);
+              showModal(
+                "Lỗi kết nối",
+                "Không thể gửi yêu cầu đến máy chủ. Vui lòng kiểm tra lại kết nối mạng.",
+                "error"
+              );
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
