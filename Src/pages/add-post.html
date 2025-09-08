@@ -871,17 +871,35 @@
           });
         }
         // --- 5. LẮNG NGHE SỰ KIỆN SUBMIT FORM VỚI VALIDATION (Nâng cấp) ---
+        // Thay thế toàn bộ hàm xử lý sự kiện cũ bằng hàm này
         document.querySelectorAll("#post-actions button").forEach((btn) => {
           btn.addEventListener("click", async (e) => {
             e.preventDefault();
 
-            // [THÊM MỚI] Lấy ra tất cả các nút hành động và lưu lại text gốc của nút được nhấn
+            // [SỬA ĐỔI] Lấy ra các nút và text gốc
             const actionButtons = document.querySelectorAll(
               "#post-actions button"
             );
             const originalButtonText = btn.textContent;
 
-            // [THÊM MỚI] Vô hiệu hóa tất cả các nút và hiển thị trạng thái đang xử lý
+            // --- [SỬA ĐỔI] BƯỚC 1: Xác định hành động NGAY LẬP TỨC ---
+            const action = btn.innerText;
+            let status = "draft";
+            if (action.includes("Xuất bản")) {
+              status = "published";
+            }
+
+            // Bỏ qua logic submit nếu là "Xem trước"
+            if (action.includes("Xem trước")) {
+              showModal(
+                "Thông báo",
+                "Chức năng 'Xem trước' đang được phát triển!",
+                "success"
+              );
+              return;
+            }
+
+            // --- BƯỚC 2: Vô hiệu hóa nút và hiển thị trạng thái tải ---
             actionButtons.forEach((button) => (button.disabled = true));
             btn.textContent = "Đang xử lý...";
 
@@ -893,17 +911,13 @@
               const fileInput = document.getElementById("file-upload");
               const imageFile = fileInput.files[0];
 
-              // **Bắt đầu Validate**
+              // **Validate**
               const errors = [];
-              if (!title) {
-                errors.push("<li>Tiêu đề không được để trống.</li>");
-              }
-              if (!slug) {
+              if (!title) errors.push("<li>Tiêu đề không được để trống.</li>");
+              if (!slug)
                 errors.push("<li>Đường dẫn (Slug) không được để trống.</li>");
-              }
-              if (!imageFile) {
+              if (!imageFile)
                 errors.push("<li>Vui lòng chọn ảnh đại diện.</li>");
-              }
               if (
                 !content ||
                 content.replace(/<(.|\n)*?>/g, "").trim().length === 0
@@ -911,7 +925,6 @@
                 errors.push("<li>Nội dung bài viết không được để trống.</li>");
               }
 
-              // Nếu có lỗi, hiển thị modal lỗi và dừng lại
               if (errors.length > 0) {
                 showModal(
                   "Dữ liệu không hợp lệ",
@@ -920,22 +933,7 @@
                   )}</ul>`,
                   "error"
                 );
-                // [SỬA ĐỔI] Ném lỗi để dừng thực thi và nhảy tới khối finally
                 throw new Error("Validation failed");
-              }
-              // **Kết thúc Validate**
-
-              const action = btn.innerText;
-              let status = "draft";
-              if (action.includes("Xuất bản")) status = "published";
-
-              if (action.includes("Xem trước")) {
-                showModal(
-                  "Thông báo",
-                  "Chức năng 'Xem trước' đang được phát triển!",
-                  "success"
-                );
-                return; // Dừng lại nhưng vẫn chạy finally ở dưới
               }
 
               const fd = new FormData();
@@ -946,7 +944,7 @@
                 document.getElementById("excerpt").value.trim()
               );
               fd.append("content", content);
-              fd.append("status", status);
+              fd.append("status", status); // Sử dụng biến status đã được xác định ở trên
               fd.append("image", imageFile);
 
               const res = await fetchWithAuth(
@@ -961,19 +959,23 @@
               if (res.ok) {
                 showModal(
                   "Thành công!",
+                  // Thông báo bây giờ sẽ hiển thị chính xác
                   `Bài viết đã ${
                     status === "draft" ? "lưu nháp" : "xuất bản"
                   } thành công.`,
                   "success"
                 );
-                // Reset form
                 document.getElementById("title").value = "";
                 document.getElementById("slug").value = "";
                 document.getElementById("excerpt").value = "";
                 document.getElementById("file-upload").value = "";
+
+                // 2. Reset nội dung của CKEditor
                 if (editorInstance) {
                   editorInstance.setData("");
                 }
+
+                // 3. Reset và ẩn ảnh xem trước
                 const previewImage = document.getElementById("preview-image");
                 if (previewImage) {
                   previewImage.src = "";
@@ -986,9 +988,7 @@
                   "error"
                 );
               }
-              // --- KẾT THÚC LOGIC GỐC CỦA BẠN ---
             } catch (error) {
-              // Nếu lỗi không phải do validation, thì mới hiển thị lỗi kết nối
               if (error.message !== "Validation failed") {
                 console.error("Fetch error:", error);
                 showModal(
@@ -998,8 +998,7 @@
                 );
               }
             } finally {
-              // [THÊM MỚI] Khối này LUÔN LUÔN chạy, dù thành công hay thất bại
-              // Kích hoạt lại các nút và trả lại text gốc
+              // Khối này LUÔN LUÔN chạy, dù thành công hay thất bại
               actionButtons.forEach((button) => (button.disabled = false));
               btn.textContent = originalButtonText;
             }
