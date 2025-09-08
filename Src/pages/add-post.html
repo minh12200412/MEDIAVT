@@ -875,72 +875,80 @@
           btn.addEventListener("click", async (e) => {
             e.preventDefault();
 
-            // Lấy dữ liệu từ form
-            const title = document.getElementById("title").value.trim();
-            const slug = document.getElementById("slug").value.trim();
-            const content = editorInstance.getData();
-            const fileInput = document.getElementById("file-upload");
-            const imageFile = fileInput.files[0];
-
-            // **Bắt đầu Validate**
-            const errors = [];
-            if (!title) {
-              errors.push("<li>Tiêu đề không được để trống.</li>");
-            }
-            if (!slug) {
-              errors.push("<li>Đường dẫn (Slug) không được để trống.</li>");
-            }
-            if (!imageFile) {
-              errors.push("<li>Vui lòng chọn ảnh đại diện.</li>");
-            }
-            // CKEditor khi trống vẫn có thể chứa tag <p></p>, cần kiểm tra kỹ hơn
-            if (
-              !content ||
-              content.replace(/<(.|\n)*?>/g, "").trim().length === 0
-            ) {
-              errors.push("<li>Nội dung bài viết không được để trống.</li>");
-            }
-
-            // Nếu có lỗi, hiển thị modal lỗi và dừng lại
-            if (errors.length > 0) {
-              showModal(
-                "Dữ liệu không hợp lệ",
-                `<p class="mb-2">Vui lòng kiểm tra lại các thông tin sau:</p><ul class="list-disc list-inside">${errors.join(
-                  ""
-                )}</ul>`,
-                "error"
-              );
-              return; // Dừng hàm tại đây
-            }
-            // **Kết thúc Validate**
-
-            // Nếu không có lỗi, tiếp tục gửi dữ liệu
-            const action = btn.innerText;
-            let status = "draft";
-            if (action.includes("Xuất bản")) status = "published";
-
-            // Bỏ qua logic submit nếu là "Xem trước"
-            if (action.includes("Xem trước")) {
-              showModal(
-                "Thông báo",
-                "Chức năng 'Xem trước' đang được phát triển!",
-                "success"
-              );
-              return;
-            }
-
-            const fd = new FormData();
-            fd.append("title", title);
-            fd.append("slug", slug);
-            fd.append(
-              "summary",
-              document.getElementById("excerpt").value.trim()
+            // [THÊM MỚI] Lấy ra tất cả các nút hành động và lưu lại text gốc của nút được nhấn
+            const actionButtons = document.querySelectorAll(
+              "#post-actions button"
             );
-            fd.append("content", content);
-            fd.append("status", status);
-            fd.append("image", imageFile);
+            const originalButtonText = btn.textContent;
+
+            // [THÊM MỚI] Vô hiệu hóa tất cả các nút và hiển thị trạng thái đang xử lý
+            actionButtons.forEach((button) => (button.disabled = true));
+            btn.textContent = "Đang xử lý...";
 
             try {
+              // --- BẮT ĐẦU LOGIC GỐC CỦA BẠN ---
+              const title = document.getElementById("title").value.trim();
+              const slug = document.getElementById("slug").value.trim();
+              const content = editorInstance.getData();
+              const fileInput = document.getElementById("file-upload");
+              const imageFile = fileInput.files[0];
+
+              // **Bắt đầu Validate**
+              const errors = [];
+              if (!title) {
+                errors.push("<li>Tiêu đề không được để trống.</li>");
+              }
+              if (!slug) {
+                errors.push("<li>Đường dẫn (Slug) không được để trống.</li>");
+              }
+              if (!imageFile) {
+                errors.push("<li>Vui lòng chọn ảnh đại diện.</li>");
+              }
+              if (
+                !content ||
+                content.replace(/<(.|\n)*?>/g, "").trim().length === 0
+              ) {
+                errors.push("<li>Nội dung bài viết không được để trống.</li>");
+              }
+
+              // Nếu có lỗi, hiển thị modal lỗi và dừng lại
+              if (errors.length > 0) {
+                showModal(
+                  "Dữ liệu không hợp lệ",
+                  `<p class="mb-2">Vui lòng kiểm tra lại các thông tin sau:</p><ul class="list-disc list-inside">${errors.join(
+                    ""
+                  )}</ul>`,
+                  "error"
+                );
+                // [SỬA ĐỔI] Ném lỗi để dừng thực thi và nhảy tới khối finally
+                throw new Error("Validation failed");
+              }
+              // **Kết thúc Validate**
+
+              const action = btn.innerText;
+              let status = "draft";
+              if (action.includes("Xuất bản")) status = "published";
+
+              if (action.includes("Xem trước")) {
+                showModal(
+                  "Thông báo",
+                  "Chức năng 'Xem trước' đang được phát triển!",
+                  "success"
+                );
+                return; // Dừng lại nhưng vẫn chạy finally ở dưới
+              }
+
+              const fd = new FormData();
+              fd.append("title", title);
+              fd.append("slug", slug);
+              fd.append(
+                "summary",
+                document.getElementById("excerpt").value.trim()
+              );
+              fd.append("content", content);
+              fd.append("status", status);
+              fd.append("image", imageFile);
+
               const res = await fetchWithAuth(
                 "https://backendblog-production-3ce5.up.railway.app/api/posts",
                 {
@@ -951,7 +959,6 @@
 
               const data = await res.json();
               if (res.ok) {
-                // Thay thế alert bằng modal thành công
                 showModal(
                   "Thành công!",
                   `Bài viết đã ${
@@ -959,38 +966,42 @@
                   } thành công.`,
                   "success"
                 );
+                // Reset form
                 document.getElementById("title").value = "";
                 document.getElementById("slug").value = "";
                 document.getElementById("excerpt").value = "";
                 document.getElementById("file-upload").value = "";
-
-                // 2. Reset nội dung của CKEditor
                 if (editorInstance) {
                   editorInstance.setData("");
                 }
-
-                // 3. Reset và ẩn ảnh xem trước
                 const previewImage = document.getElementById("preview-image");
                 if (previewImage) {
                   previewImage.src = "";
                   previewImage.classList.add("hidden");
                 }
-                // Có thể reset form hoặc chuyển trang tại đây
               } else {
-                // Thay thế alert bằng modal lỗi từ server
                 showModal(
                   "Thao tác thất bại",
                   `Lỗi: ${data.error || "Không rõ nguyên nhân"}`,
                   "error"
                 );
               }
+              // --- KẾT THÚC LOGIC GỐC CỦA BẠN ---
             } catch (error) {
-              console.error("Fetch error:", error);
-              showModal(
-                "Lỗi kết nối",
-                "Không thể gửi yêu cầu đến máy chủ. Vui lòng kiểm tra lại kết nối mạng.",
-                "error"
-              );
+              // Nếu lỗi không phải do validation, thì mới hiển thị lỗi kết nối
+              if (error.message !== "Validation failed") {
+                console.error("Fetch error:", error);
+                showModal(
+                  "Lỗi kết nối",
+                  "Không thể gửi yêu cầu đến máy chủ. Vui lòng kiểm tra lại kết nối mạng.",
+                  "error"
+                );
+              }
+            } finally {
+              // [THÊM MỚI] Khối này LUÔN LUÔN chạy, dù thành công hay thất bại
+              // Kích hoạt lại các nút và trả lại text gốc
+              actionButtons.forEach((button) => (button.disabled = false));
+              btn.textContent = originalButtonText;
             }
           });
         });
