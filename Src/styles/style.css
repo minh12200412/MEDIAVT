@@ -499,7 +499,7 @@ body.customize-support main {
 }
 @media (min-width: 1024px) {
   .small-image {
-    height: 700px !important;
+    height: 580px !important;
     width: 100%;
     object-fit: cover !important;
   }
