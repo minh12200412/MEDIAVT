@@ -440,7 +440,7 @@ video {
 }
 @media (min-width: 2000px) {
   .container {
-    max-width: 2000px;
+    max-width: 2000px !important;
   }
 }
 .visible {

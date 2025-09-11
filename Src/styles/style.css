@@ -504,30 +504,37 @@ body.customize-support main {
     object-fit: cover !important;
   }
 }
-@media (min-width: 1500px) {
+@media (min-width: 1700px) {
   .small-image {
-    height: 880px !important;
+    height: 680px !important;
     width: 100%;
     object-fit: cover !important;
   }
 }
 @media (min-width: 2024px) {
   .small-image {
-    height: 980px !important;
+    height: 780px !important;
     width: 100%;
     object-fit: cover !important;
   }
 }
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1536px; /* Tăng chiều rộng tối đa của container */
+@media (min-width: 2224px) {
+  .small-image {
+    height: 880px !important;
+    width: 100%;
+    object-fit: cover !important;
   }
 }
+/* @media (min-width: 1280px) {
+  .container {
+    max-width: 1536px; 
+  }
+} */
 
 /* Bạn cũng có thể thêm một breakpoint lớn hơn nữa nếu cần, ví dụ cho màn hình 4K 
 */
-@media (min-width: 1536px) {
+/* @media (min-width: 1536px) {
   .container {
     max-width: 1920px;
   }
-}
+} */
