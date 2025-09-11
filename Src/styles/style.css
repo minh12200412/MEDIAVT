@@ -497,30 +497,78 @@ body.customize-support main {
   max-width: 280px;
   width: 100%;
 }
+@media (min-width: 2000px) {
+  .js {
+    max-width: 480px !important;
+    width: 100%;
+  }
+}
 @media (min-width: 1024px) {
   .small-image {
-    height: 580px !important;
+    height: 380px !important;
     width: 100%;
     object-fit: cover !important;
   }
 }
-@media (min-width: 1700px) {
+@media (min-width: 1098px) {
+  .small-image {
+    height: 480px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
+@media (min-width: 1200px) {
   .small-image {
     height: 680px !important;
     width: 100%;
     object-fit: cover !important;
   }
 }
+@media (min-width: 1700px) {
+  .small-image {
+    height: 720px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
 @media (min-width: 2024px) {
   .small-image {
-    height: 780px !important;
+    height: 730px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
+@media (min-width: 2100px) {
+  .small-image {
+    height: 800px !important;
     width: 100%;
     object-fit: cover !important;
   }
 }
 @media (min-width: 2224px) {
   .small-image {
-    height: 880px !important;
+    height: 900px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
+@media (min-width: 2500px) {
+  .small-image {
+    height: 1180px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
+@media (min-width: 2500px) {
+  .small-image {
+    height: 1180px !important;
+    width: 100%;
+    object-fit: cover !important;
+  }
+}
+@media (min-width: 3000px) {
+  .small-image {
+    height: 1380px !important;
     width: 100%;
     object-fit: cover !important;
   }
@@ -538,3 +586,81 @@ body.customize-support main {
     max-width: 1920px;
   }
 } */
+/* Bắt đầu các quy tắc ghi đè cho màn hình desktop (từ 1024px trở lên) */
+@media (min-width: 1024px) {
+  /* --- 1. Sửa lỗi cho Menu chính (ul#header-menu) --- */
+
+  /* Hiển thị menu chính dưới dạng flexbox */
+  #header-menu {
+    display: flex !important;
+    position: static !important; /* Chuyển từ absolute (kiểu mobile) sang static (kiểu desktop) */
+    height: 100% !important; /* Chiều cao bằng header, không phải toàn màn hình */
+    background-color: transparent !important; /* Bỏ nền trắng của mobile overlay */
+    margin-left: 1rem !important; /* Thêm một chút khoảng cách */
+
+    /* Vô hiệu hóa các thuộc tính của menu mobile */
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+
+  /* --- 2. Ẩn các thành phần của giao diện mobile --- */
+
+  /* Ẩn nút toggle (hamburger menu) */
+  #toggleMenuButton {
+    display: none !important;
+  }
+
+  /* Ẩn nút Zalo trên thanh header */
+  /* Lưu ý: Chúng ta nhắm vào thẻ div cha của nút Zalo */
+  #header .flex-1.justify-end.items-center {
+    display: none !important;
+  }
+
+  /* --- 3. Căn chỉnh và tạo kiểu cho các mục menu --- */
+
+  /* Căn chỉnh các mục menu con trực tiếp của ul */
+  #header-menu > li.menu-item {
+    display: flex;
+    align-items: center;
+    position: relative; /* Cần cho menu con (sub-menu) */
+    padding: 0 15px; /* Tạo khoảng cách giữa các mục menu */
+  }
+
+  /* --- 4. Tạo kiểu cho menu con (sub-menu) --- */
+
+  /* Ẩn menu con theo mặc định */
+  #header-menu .sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Hiển thị ngay bên dưới mục menu cha */
+    left: 0;
+    background-color: white;
+    min-width: 250px; /* Độ rộng tối thiểu của menu con */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 100; /* Đảm bảo menu con nổi lên trên */
+    list-style: none;
+    padding: 0;
+    border: 1px solid #eee;
+  }
+
+  /* Các mục trong menu con */
+  #header-menu .sub-menu li a {
+    color: #333; /* Màu chữ cho menu con */
+    padding: 12px 15px;
+    display: block;
+    white-space: nowrap; /* Ngăn không cho chữ xuống dòng */
+  }
+
+  /* Thay đổi màu khi di chuột vào mục trong menu con */
+  #header-menu .sub-menu li a:hover {
+    background-color: #f5f5f5;
+  }
+
+  /* Hiển thị menu con khi di chuột vào mục menu cha */
+  #header-menu > li.menu-item:hover > .sub-menu {
+    display: block;
+  }
+}
