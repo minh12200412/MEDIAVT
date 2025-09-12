@@ -519,7 +519,7 @@ body.customize-support main {
 }
 @media (min-width: 1200px) {
   .small-image {
-    height: 680px !important;
+    height: 480px !important;
     width: 100%;
     object-fit: cover !important;
   }
@@ -625,7 +625,7 @@ body.customize-support main {
     display: flex;
     align-items: center;
     position: relative; /* Cần cho menu con (sub-menu) */
-    padding: 0 15px; /* Tạo khoảng cách giữa các mục menu */
+    /* Tạo khoảng cách giữa các mục menu */
   }
 
   /* --- 4. Tạo kiểu cho menu con (sub-menu) --- */
