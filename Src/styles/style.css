@@ -519,7 +519,7 @@ body.customize-support main {
 }
 @media (min-width: 1200px) {
   .small-image {
-    height: 480px !important;
+    height: 580px !important;
     width: 100%;
     object-fit: cover !important;
   }
@@ -663,4 +663,8 @@ body.customize-support main {
   #header-menu > li.menu-item:hover > .sub-menu {
     display: block;
   }
+}
+.logo-design {
+  display: flex;
+  justify-content: center;
 }
