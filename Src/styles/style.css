@@ -493,7 +493,7 @@ body.customize-support main {
     text-align: left;
   }
 }
-.js {
+/* .js {
   max-width: 280px;
   width: 100%;
 }
@@ -502,7 +502,7 @@ body.customize-support main {
     max-width: 480px !important;
     width: 100%;
   }
-}
+} */
 @media (min-width: 1024px) {
   .small-image {
     height: 380px !important;
