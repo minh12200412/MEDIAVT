@@ -668,3 +668,9 @@ body.customize-support main {
   display: flex;
   justify-content: center;
 }
+.addDesign {
+  height: 180% !important;
+}
+.addDesign1 {
+  height: 150% !important;
+}
